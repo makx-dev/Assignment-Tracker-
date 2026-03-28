@@ -7,7 +7,7 @@ const Student = require('./students.js');
 
 const students = [
   { name: 'Aarti Sharma',           rollNo: 2,  email: 'aarti.sharma.it@ghrcemn.raisoni.net',           division: 'I1' },
-  { name: 'Aaditi Tiwari',          rollNo: 1,  email: 'aaditi.tiwari.it@ghrcemn.raisoni.net',          division: 'I11' },
+  { name: 'Aaditi Tiwari',          rollNo: 1,  email: 'aaditi.tiwari.it@ghrcemn.raisoni.net',          division: 'I1' },
   { name: 'Aayush Umekar',          rollNo: 3,  email: 'aayush.umekar.it@ghrcemn.raisoni.net',          division: 'I1' },
   { name: 'Alfesh Zade',            rollNo: 4,  email: 'alfesh.zade.it@ghrcemn.raisoni.net',            division: 'I1' },
   { name: 'Ankita Gabhane',         rollNo: 5,  email: 'ankita.gabhane.it@ghrcemn.raisoni.net',         division: 'I1' },
