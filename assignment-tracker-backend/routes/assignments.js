@@ -21,10 +21,16 @@ router.get('/', async (req, res) => {
 // POST - Create new assignment + auto-create pending submissions for all students
 router.post('/', async (req, res) => {
   try {
-    const { title, subject, deadline, maxMarks, description } = req.body; // was dueDate
+    const { title, subject, maxMarks, description, desc, dueDate, deadline } = req.body;
+    const finalDeadline = deadline || dueDate;
+    const finalDescription = description || desc || "";
 
     const assignment = await Assignment.create({ 
-      title, subject, deadline, maxMarks, description  // matches model now
+      title,
+      subject,
+      deadline: finalDeadline,
+      maxMarks,
+      description: finalDescription
     });
 
     const students = await Student.find();

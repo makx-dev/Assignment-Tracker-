@@ -1,13 +1,21 @@
-﻿const BASE_URL = 'http://localhost:3000/api';
+﻿const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+
+const handleResponse = async (res) => {
+  const payload = await res.json();
+  if (!res.ok) {
+    throw new Error(payload.error || payload.message || 'API request failed');
+  }
+  return payload;
+};
 
 export const getAllStudents = async () => {
   const res = await fetch(`${BASE_URL}/students`);
-  return res.json();
+  return handleResponse(res);
 };
 
 export const getAllAssignments = async () => {
   const res = await fetch(`${BASE_URL}/assignments`);
-  return res.json();
+  return handleResponse(res);
 };
 
 export const createAssignment = async (data) => {
@@ -16,23 +24,19 @@ export const createAssignment = async (data) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  const payload = await res.json();
-  if (!res.ok) {
-    throw new Error(payload.error || payload.message || 'Failed to create assignment');
-  }
-  return payload;
+  return handleResponse(res);
 };
 
 export const deleteAssignment = async (id) => {
   const res = await fetch(`${BASE_URL}/assignments/${id}`, {
     method: 'DELETE',
   });
-  return res.json();
+  return handleResponse(res);
 };
 
 export const getSubmissionsByAssignment = async (assignmentId) => {
   const res = await fetch(`${BASE_URL}/submissions/assignment/${assignmentId}`);
-  return res.json();
+  return handleResponse(res);
 };
 
 export const updateSubmissionStatus = async (submissionId, status) => {
@@ -41,5 +45,5 @@ export const updateSubmissionStatus = async (submissionId, status) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   });
-  return res.json();
+  return handleResponse(res);
 };
