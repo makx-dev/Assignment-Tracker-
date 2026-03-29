@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -26,6 +27,13 @@ app.get('/', (req, res) => {
 app.use('/api/assignments', assignmentsRouter);
 app.use('/api/students', studentsRouter);
 app.use('/api/submissions', submissionsRouter);
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, '../my-awesome-app/build')));
+
+// Handle React routing - serve index.html for any other route
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../my-awesome-app/build', 'index.html'));
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

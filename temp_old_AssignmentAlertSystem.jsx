@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo, useContext, createContext } from "react";
-import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment } from "../api";
+﻿import { useState, useEffect, useMemo, useContext, createContext } from "react";
 
 // Theme System
 const ThemeContext = createContext();
@@ -90,14 +89,14 @@ const THEMES = {
 
 // Seed Data
 const SEED_STUDENTS = [
-  { id: "s1", name: "Manthan Khotele", roll: "I 26", email: "manthankhotele7@gmail.com", div: "I2" },
-  { id: "s2", name: "Ayush Chirde",    roll: "I 10", email: "ayush123@gmail.com",         div: "I1" },
-  { id: "s3", name: "Ritesh Gujar",    roll: "I 41", email: "ritesh@ghriet.ac.in",         div: "I2" },
-  { id: "s4", name: "Aryan Pathak",    roll: "I 8",  email: "aryan@ghriet.ac.in",          div: "I1" },
-  { id: "s5", name: "Prachi Nawkhare", roll: "I 35", email: "Prachi@ghriet.ac.in",         div: "I2" },
-  { id: "s6", name: "Noesha Sakhre",   roll: "I 32", email: "noesha@ghriet.ac.in",         div: "I2" },
-  { id: "s7", name: "Anaisha Badhai",  roll: "I 78", email: "anaisha@ghriet.ac.in",        div: "I2" },
-  { id: "s8", name: "Krish Kubde",     roll: "I 21", email: "krish@ghriet.ac.in",          div: "I1" },
+  { id: "s1", name: "Manthan Khotele", roll: "I 26", email: "manthankhotele7@gmail.com", div: "B" },
+  { id: "s2", name: "Ayush Chirde",    roll: "I 10", email: "ayush123@gmail.com",         div: "A" },
+  { id: "s3", name: "Ritesh Gujar",    roll: "I 41", email: "ritesh@ghriet.ac.in",         div: "B" },
+  { id: "s4", name: "Aryan Pathak",    roll: "I 8",  email: "aryan@ghriet.ac.in",          div: "A" },
+  { id: "s5", name: "Prachi Nawkhare", roll: "I 35", email: "Prachi@ghriet.ac.in",         div: "B" },
+  { id: "s6", name: "Noesha Sakhre",   roll: "I 32", email: "noesha@ghriet.ac.in",         div: "B" },
+  { id: "s7", name: "Anaisha Badhai",  roll: "I 78", email: "anaisha@ghriet.ac.in",        div: "B" },
+  { id: "s8", name: "Krish Kubde",     roll: "I 21", email: "krish@ghriet.ac.in",          div: "A" },
 ];
 
 const today     = new Date();
@@ -205,7 +204,7 @@ const Modal = ({ title, onClose, children }) => {
       <div className={`${t.modalBg} border ${t.modalBorder} rounded-2xl w-full max-w-lg shadow-2xl`}>
         <div className={`flex items-center justify-between px-6 py-4 border-b ${t.modalHeader}`}>
           <h3 className={`${t.textPrimary} font-semibold text-lg`}>{title}</h3>
-          <button onClick={onClose} className={`${t.textSecondary} hover:${t.textPrimary} transition-colors text-xl leading-none`}>×</button>
+          <button onClick={onClose} className={`${t.textSecondary} hover:${t.textPrimary} transition-colors text-xl leading-none`}>├ù</button>
         </div>
         <div className="p-6">{children}</div>
       </div>
@@ -329,7 +328,7 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
           <h1 className={`text-3xl font-bold ${text} tracking-tight`} style={{ fontFamily: "'Georgia', serif" }}>
             Assignment<span style={{ color: "#00BCD4" }}>Track</span>
           </h1>
-          <p className={`${sub} text-sm mt-1`}>GHRIET Nagpur · IT Department</p>
+          <p className={`${sub} text-sm mt-1`}>GHRIET Nagpur ┬╖ IT Department</p>
         </div>
 
         <div className={`${card} border rounded-2xl p-8 shadow-2xl backdrop-blur transition-colors duration-300`}>
@@ -342,13 +341,13 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
           <div className="mb-4">
             <label className={`block text-sm ${lbl} mb-1.5 font-medium`}>Password</label>
             <input type="password" value={form.pass} onChange={e => setForm(f => ({ ...f, pass: e.target.value }))}
-              placeholder="••••••••" onKeyDown={e => e.key === "Enter" && handle()}
+              placeholder="ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó" onKeyDown={e => e.key === "Enter" && handle()}
               className={`w-full ${inp} border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-teal-500 transition-colors`} />
           </div>
           {err && <div className="text-red-400 text-xs mb-4 bg-red-900/20 border border-red-800/40 rounded-lg px-3 py-2">{err}</div>}
           <button onClick={handle} disabled={loading} className="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all"
             style={{ background: loading ? "#0097A7" : "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
-            {loading ? "Authenticating..." : "Sign In →"}
+            {loading ? "Authenticating..." : "Sign In ΓåÆ"}
           </button>
           <div className={`mt-4 pt-4 border-t ${foot} text-center text-xs`}>
             Demo: <span className={footT}>teacher / teach123</span> &nbsp;|&nbsp; <span className={footT}>admin / admin123</span>
@@ -363,21 +362,19 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
 function StudentManagement({ students, setStudents }) {
   const t = useTheme();
   const [modal,  setModal]  = useState(false);
-  const [form,   setForm]   = useState({ name: "", roll: "", email: "", div: "I1" });
+  const [form,   setForm]   = useState({ name: "", roll: "", email: "", div: "A" });
   const [search, setSearch] = useState("");
 
-  const filtered = students.filter(s => {
-    const query = search.toLowerCase();
-    const name  = String(s.name || "").toLowerCase();
-    const roll  = String(s.roll || s.rollNo || "").toLowerCase();
-    const div   = String(s.div || s.division || "").toLowerCase();
-    return name.includes(query) || roll.includes(query) || div.includes(query);
-  });
+  const filtered = students.filter(s =>
+    s.name.toLowerCase().includes(search.toLowerCase()) ||
+    s.roll.toLowerCase().includes(search.toLowerCase()) ||
+    s.div.toLowerCase().includes(search.toLowerCase())
+  );
 
   const add = () => {
     if (!form.name || !form.roll || !form.email) return;
     setStudents(prev => [...prev, { id: uid(), ...form }]);
-    setForm({ name: "", roll: "", email: "", div: "I1" }); setModal(false);
+    setForm({ name: "", roll: "", email: "", div: "A" }); setModal(false);
   };
 
   return (
@@ -390,7 +387,7 @@ function StudentManagement({ students, setStudents }) {
         <Btn onClick={() => setModal(true)}><Icon name="plus" size={16} />Add Student</Btn>
       </div>
       <div className="mb-4">
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, roll, or division…"
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, roll, or divisionΓÇª"
           className={`w-full max-w-sm ${t.input} border rounded-lg px-3 py-2.5 text-sm focus:outline-none ${t.inputFocus} transition-colors`} />
       </div>
       <div className={`border ${t.card} rounded-xl overflow-hidden`}>
@@ -425,11 +422,7 @@ function StudentManagement({ students, setStudents }) {
           <Input label="Roll Number" value={form.roll} onChange={e => setForm(f => ({ ...f, roll:  e.target.value }))} placeholder="e.g. IT2409" />
           <Input label="Email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="student@ghriet.ac.in" />
           <SelectField label="Division" value={form.div} onChange={e => setForm(f => ({ ...f, div: e.target.value }))}
-            options={[
-              { value: "I1", label: "Division I1" },
-              { value: "I2", label: "Division I2" },
-              { value: "I3", label: "Division I3" }
-            ]} />
+            options={[{ value: "A", label: "Division A" }, { value: "B", label: "Division B" }]} />
           <div className="flex gap-3 mt-2"><Btn onClick={add}>Add Student</Btn><Btn variant="ghost" onClick={() => setModal(false)}>Cancel</Btn></div>
         </Modal>
       )}
@@ -444,38 +437,10 @@ function AssignmentManagement({ assignments, setAssignments }) {
   const [form,  setForm]  = useState({ title: "", subject: "", deadline: "", maxMarks: "20", desc: "" });
   const sorted = useMemo(() => [...assignments].sort((a, b) => new Date(a.deadline) - new Date(b.deadline)), [assignments]);
 
-  const add = async () => {
+  const add = () => {
     if (!form.title || !form.subject || !form.deadline) return;
-    try {
-      const result = await createAssignment(form);
-      const payload = result.assignment || result;
-      const assignmentId = payload._id || payload.id;
-      if (!payload || !assignmentId) {
-        throw new Error("Invalid assignment response from server");
-      }
-      const newAssignment = {
-        id: assignmentId,
-        title: payload.title,
-        subject: payload.subject,
-        deadline: payload.dueDate || payload.deadline || form.deadline,
-        maxMarks: Number(form.maxMarks) || 20,
-        desc: payload.desc || form.desc || ""
-      };
-      setAssignments(prev => [newAssignment, ...prev]);
-      setForm({ title: "", subject: "", deadline: "", maxMarks: "20", desc: "" });
-      setModal(false);
-    } catch (err) {
-      console.error("Failed to create assignment:", err);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteAssignment(id);
-    } catch (err) {
-      console.error("Failed to delete assignment:", err);
-    }
-    setAssignments(prev => prev.filter(x => x.id !== id));
+    setAssignments(prev => [...prev, { id: uid(), ...form, maxMarks: Number(form.maxMarks) }]);
+    setForm({ title: "", subject: "", deadline: "", maxMarks: "20", desc: "" }); setModal(false);
   };
 
   return (
@@ -505,7 +470,7 @@ function AssignmentManagement({ assignments, setAssignments }) {
                     <span>Max Marks: <span className={t.textPrimary}>{a.maxMarks}</span></span>
                   </div>
                 </div>
-                <button onClick={() => handleDelete(a.id)} className={`${t.textMuted} hover:text-red-500 transition-colors ml-4`}>
+                <button onClick={() => setAssignments(p => p.filter(x => x.id !== a.id))} className={`${t.textMuted} hover:text-red-500 transition-colors ml-4`}>
                   <Icon name="trash" size={15} />
                 </button>
               </div>
@@ -520,7 +485,7 @@ function AssignmentManagement({ assignments, setAssignments }) {
           <Input    label="Subject"     value={form.subject}  onChange={e => setForm(f => ({ ...f, subject:  e.target.value }))} placeholder="e.g. DSA" />
           <Input    label="Deadline" type="date" value={form.deadline}  onChange={e => setForm(f => ({ ...f, deadline: e.target.value }))} />
           <Input    label="Max Marks" type="number" value={form.maxMarks} onChange={e => setForm(f => ({ ...f, maxMarks: e.target.value }))} />
-          <Textarea label="Description" value={form.desc}     onChange={e => setForm(f => ({ ...f, desc:     e.target.value }))} placeholder="Assignment details…" />
+          <Textarea label="Description" value={form.desc}     onChange={e => setForm(f => ({ ...f, desc:     e.target.value }))} placeholder="Assignment detailsΓÇª" />
           <div className="flex gap-3 mt-2"><Btn onClick={add}>Add Assignment</Btn><Btn variant="ghost" onClick={() => setModal(false)}>Cancel</Btn></div>
         </Modal>
       )}
@@ -580,8 +545,8 @@ function SubmissionEntry({ students, assignments, submissions, setSubmissions })
                   <td className={`px-5 py-3 ${t.textPrimary} font-medium`}>{s.name}</td>
                   <td className="px-5 py-3 font-mono text-teal-500 text-xs">{s.roll}</td>
                   <td className="px-5 py-3">{sub ? <Badge text={sub.late ? "Late Submitted" : "Submitted"} color={sub.late ? "amber" : "green"} /> : <Badge text="Not Submitted" color="red" />}</td>
-                  <td className={`px-5 py-3 ${t.textSecondary} text-xs`}>{sub ? formatDate(sub.submittedOn) : "—"}</td>
-                  <td className="px-5 py-3 font-mono text-sm">{sub ? <span className={t.textPrimary}>{sub.marks}</span> : <span className={t.textMuted}>—</span>}</td>
+                  <td className={`px-5 py-3 ${t.textSecondary} text-xs`}>{sub ? formatDate(sub.submittedOn) : "ΓÇö"}</td>
+                  <td className="px-5 py-3 font-mono text-sm">{sub ? <span className={t.textPrimary}>{sub.marks}</span> : <span className={t.textMuted}>ΓÇö</span>}</td>
                   <td className="px-5 py-3">
                     {sub
                       ? <button onClick={() => setSubmissions(p => p.filter(x => !(x.assignmentId === selAssign && x.studentId === s.id)))} className={`${t.textMuted} hover:text-red-500 text-xs transition-colors`}>Unmark</button>
@@ -594,9 +559,9 @@ function SubmissionEntry({ students, assignments, submissions, setSubmissions })
         </table>
       </div>
       {modal && (
-        <Modal title={`Mark Submission — ${modal.name}`} onClose={() => setModal(null)}>
+        <Modal title={`Mark Submission ΓÇö ${modal.name}`} onClose={() => setModal(null)}>
           <p className={`${t.textSecondary} text-sm mb-4`}>Assignment: <span className={t.textPrimary}>{assignment?.title}</span></p>
-          {isLate && <div className="text-amber-500 text-xs bg-amber-900/20 border border-amber-800/30 rounded-lg px-3 py-2 mb-4">⚠ Deadline has passed. This will be marked as a late submission.</div>}
+          {isLate && <div className="text-amber-500 text-xs bg-amber-900/20 border border-amber-800/30 rounded-lg px-3 py-2 mb-4">ΓÜá Deadline has passed. This will be marked as a late submission.</div>}
           <Input label="Marks Awarded" type="number" value={marks} onChange={e => setMarks(e.target.value)} placeholder={`Out of ${assignment?.maxMarks}`} />
           <div className="flex gap-3 mt-2"><Btn onClick={markSubmitted}><Icon name="check" size={16} />Mark Submitted</Btn><Btn variant="ghost" onClick={() => setModal(null)}>Cancel</Btn></div>
         </Modal>
@@ -652,7 +617,7 @@ function DefaulterDetection({ students, assignments, submissions }) {
       {pastAssignments.length === 0
         ? <div className={`${t.textMuted} text-center py-16`}>No assignments past deadline yet.</div>
         : defaulters.length === 0
-        ? <div className="text-emerald-500 text-center py-16 bg-emerald-900/10 border border-emerald-800/30 rounded-xl">🎉 All students submitted on time!</div>
+        ? <div className="text-emerald-500 text-center py-16 bg-emerald-900/10 border border-emerald-800/30 rounded-xl">≡ƒÄë All students submitted on time!</div>
         : <div className="grid gap-3">
             {grouped.map(({ student, assignments: da }) => (
               <div key={student.id} className={`border ${t.defaulterCard} rounded-xl p-5 transition-colors`}>
@@ -665,7 +630,7 @@ function DefaulterDetection({ students, assignments, submissions }) {
                     </div>
                     <div className={`${t.textSecondary} text-xs mb-3`}>{student.email}</div>
                     <div className="flex flex-wrap gap-2">
-                      {da.map(a => <span key={a.id} className="text-xs bg-red-900/30 text-red-400 border border-red-800/40 rounded-md px-2 py-0.5">{a.title} · {a.subject}</span>)}
+                      {da.map(a => <span key={a.id} className="text-xs bg-red-900/30 text-red-400 border border-red-800/40 rounded-md px-2 py-0.5">{a.title} ┬╖ {a.subject}</span>)}
                     </div>
                   </div>
                   <div className="text-right">
@@ -696,7 +661,7 @@ function AlertModule({ students, assignments, submissions, alerts, setAlerts }) 
           id: uid(), studentId: s.id, assignmentId: a.id,
           studentName: s.name, studentRoll: s.roll, studentEmail: s.email,
           assignmentTitle: a.title, subject: a.subject, deadline: a.deadline,
-          message: `Dear ${s.name} (${s.roll}),\n\nThis is an automated alert to inform you that you have NOT submitted the assignment "${a.title}" (${a.subject}), which was due on ${formatDate(a.deadline)}.\n\nPlease submit your assignment immediately or contact your faculty for further instructions.\n\n— GHRIET Assignment Tracking System`,
+          message: `Dear ${s.name} (${s.roll}),\n\nThis is an automated alert to inform you that you have NOT submitted the assignment "${a.title}" (${a.subject}), which was due on ${formatDate(a.deadline)}.\n\nPlease submit your assignment immediately or contact your faculty for further instructions.\n\nΓÇö GHRIET Assignment Tracking System`,
           generatedAt: new Date().toISOString(), read: false,
         });
       }
@@ -712,7 +677,7 @@ function AlertModule({ students, assignments, submissions, alerts, setAlerts }) 
       <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <div>
           <h2 className={`text-xl font-bold ${t.textPrimary}`}>Alert Module</h2>
-          <p className={`${t.textSecondary} text-sm mt-1`}>{unread} unread · {alerts.length} total alerts</p>
+          <p className={`${t.textSecondary} text-sm mt-1`}>{unread} unread ┬╖ {alerts.length} total alerts</p>
         </div>
         <div className="flex gap-2 flex-wrap">
           <Btn variant="amber" onClick={() => { const n = generateAlerts(); alert(n > 0 ? `${n} new alerts generated!` : "No new alerts to generate."); }}>
@@ -735,7 +700,7 @@ function AlertModule({ students, assignments, submissions, alerts, setAlerts }) 
                       {!al.read && <Badge text="New" color="amber" />}
                     </div>
                     <p className={`${t.textSecondary} text-xs mb-1`}>
-                      Assignment: <span className={t.textPrimary}>{al.assignmentTitle}</span> · Deadline: <span className="text-red-500">{formatDate(al.deadline)}</span>
+                      Assignment: <span className={t.textPrimary}>{al.assignmentTitle}</span> ┬╖ Deadline: <span className="text-red-500">{formatDate(al.deadline)}</span>
                     </p>
                     <div className={`mt-3 ${t.alertMsg} border rounded-lg p-3 text-xs font-mono whitespace-pre-wrap leading-relaxed`}>{al.message}</div>
                   </div>
@@ -868,7 +833,7 @@ function Dashboard({ students, assignments, submissions, alerts }) {
             return (
               <div key={a.id}>
                 <div className="flex items-center justify-between mb-1 flex-wrap gap-2">
-                  <span className={`${t.textSecondary} text-xs font-medium`}>{a.title} <span className={t.textMuted}>· {a.subject}</span></span>
+                  <span className={`${t.textSecondary} text-xs font-medium`}>{a.title} <span className={t.textMuted}>┬╖ {a.subject}</span></span>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs ${t.textSecondary}`}>{count}/{students.length}</span>
                     <Badge text={past ? "Closed" : "Active"} color={past ? "red" : "green"} />
@@ -942,37 +907,6 @@ export default function App() {
     return () => window.removeEventListener("resize", handle);
   }, []);
 
-  useEffect(() => {
-    getAllStudents()
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setStudents(data.map(s => ({
-            id: s._id,
-            name: s.name,
-            roll: s.rollNo || s.roll || "",
-            email: s.email || "",
-            div: s.division || s.div || "I1"
-          })));
-        }
-      })
-      .catch(err => console.error("Failed to fetch students:", err));
-
-    getAllAssignments()
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setAssignments(data.map(a => ({
-            id: a._id,
-            title: a.title,
-            subject: a.subject,
-            deadline: a.dueDate || a.deadline,
-            maxMarks: a.maxMarks || 20,
-            desc: a.desc || ""
-          })));
-        }
-      })
-      .catch(err => console.error("Failed to fetch assignments:", err));
-  }, []);
-
   const navigate = (pageId) => { setPage(pageId); if (!isDesktop) setSidebarOpen(false); };
   const unreadAlerts = alerts.filter(a => !a.read).length;
 
@@ -1019,11 +953,11 @@ export default function App() {
               </div>
               <div>
                 <div className={`${t.textPrimary} font-bold text-sm leading-tight`}>AssignmentTrack</div>
-                <div className={`${t.textMuted} text-xs`}>GHRIET · IT Dept</div>
+                <div className={`${t.textMuted} text-xs`}>GHRIET ┬╖ IT Dept</div>
               </div>
             </div>
             {!isDesktop && (
-              <button onClick={() => setSidebarOpen(false)} className={`${t.textSecondary} text-2xl leading-none ml-2 transition-colors`}>×</button>
+              <button onClick={() => setSidebarOpen(false)} className={`${t.textSecondary} text-2xl leading-none ml-2 transition-colors`}>├ù</button>
             )}
           </div>
 
