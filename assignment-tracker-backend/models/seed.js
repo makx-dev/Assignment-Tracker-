@@ -4,10 +4,10 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const mongoose = require('mongoose');
 const Student = require('./student.js');
 
-console.log('MONGODB_URI loaded:', process.env.MONGODB_URI ? '✅ YES' : '❌ NO');
+console.log('MONGODB_URI loaded:', process.env.MONGODB_URI ? 'YES' : 'NO');
 
 if (!process.env.MONGODB_URI) {
-  console.error('❌ ERROR: MONGODB_URI is missing in .env file');
+  console.error('ERROR: MONGODB_URI is missing in .env file');
   process.exit(1);
 }
 
