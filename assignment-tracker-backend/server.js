@@ -1,41 +1,41 @@
-const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-
-dotenv.config();
-
-const assignmentsRouter = require('./routes/assignments');
-const studentsRouter = require('./routes/students');
-const submissionsRouter = require('./routes/submission');
+require('dotenv').config();
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://assignment-tracker-lmg.vercel.app',
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } 
+    else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+
 app.use(express.json());
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/assignment-tracker';
-
-mongoose.connect(mongoUri)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGO_URI)  
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 app.get('/', (req, res) => {
-    res.send('Assignment Tracker Backend is running.');
+  res.json({ message: 'Assignment Tracker API is running' });
 });
 
-app.use('/api/assignments', assignmentsRouter);
-app.use('/api/students', studentsRouter);
-app.use('/api/submissions', submissionsRouter);
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, '../my-awesome-app/build')));
+app.use('/api/assignments', require('./routes/assignments'));
+app.use('/api/students',    require('./routes/students'));
+app.use('/api/submissions', require('./routes/submission'));
 
-// Handle React routing - serve index.html for any other route
-app.get(/.*/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../my-awesome-app/build', 'index.html'));
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
