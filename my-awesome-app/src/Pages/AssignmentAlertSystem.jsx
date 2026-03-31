@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useContext, createContext } from "react";
-import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment } from "../api";
+import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus } from "../api";
+
 
 // Theme System
 const ThemeContext = createContext();
@@ -87,40 +88,6 @@ const THEMES = {
     defaulterCard: "bg-white border-red-200 hover:border-red-300",
   },
 };
-
-// Seed Data
-const SEED_STUDENTS = [
-  { id: "s1", name: "Manthan Khotele", roll: "I 26", email: "manthankhotele7@gmail.com", div: "I2" },
-  { id: "s2", name: "Ayush Chirde",    roll: "I 10", email: "ayush123@gmail.com",         div: "I1" },
-  { id: "s3", name: "Ritesh Gujar",    roll: "I 41", email: "ritesh@ghriet.ac.in",         div: "I2" },
-  { id: "s4", name: "Aryan Pathak",    roll: "I 8",  email: "aryan@ghriet.ac.in",          div: "I1" },
-  { id: "s5", name: "Prachi Nawkhare", roll: "I 35", email: "Prachi@ghriet.ac.in",         div: "I2" },
-  { id: "s6", name: "Noesha Sakhre",   roll: "I 32", email: "noesha@ghriet.ac.in",         div: "I2" },
-  { id: "s7", name: "Anaisha Badhai",  roll: "I 78", email: "anaisha@ghriet.ac.in",        div: "I2" },
-  { id: "s8", name: "Krish Kubde",     roll: "I 21", email: "krish@ghriet.ac.in",          div: "I1" },
-];
-
-const today     = new Date();
-const fmt       = (d) => d.toISOString().split("T")[0];
-const daysAgo   = (n) => fmt(new Date(today - n * 86400000));
-const daysAhead = (n) => fmt(new Date(today.getTime() + n * 86400000));
-
-const SEED_ASSIGNMENTS = [
-  { id: "a1", title: "TAE 02",              subject: "PPS",          deadline: daysAgo(3),   maxMarks: 20, desc: "Solve by yourself don't use Chatgpt." },
-  { id: "a2", title: "Practical Record 4th", subject: "CP",          deadline: daysAgo(1),   maxMarks: 15, desc: "Complete Record and Prepare for Viva." },
-  { id: "a3", title: "IMPE",                subject: "All Subjects", deadline: daysAhead(2), maxMarks: 10, desc: "Give Internal Mid-sem practical exam." },
-  { id: "a4", title: "Python Mini Project",  subject: "Python",      deadline: daysAhead(5), maxMarks: 30, desc: "Build a CLI-based student grade calculator." },
-];
-
-const SEED_SUBMISSIONS = [
-  { id: "sub1", studentId: "s1", assignmentId: "a1", submittedOn: daysAgo(4), marks: 18, late: false },
-  { id: "sub2", studentId: "s2", assignmentId: "a1", submittedOn: daysAgo(2), marks: 14, late: true  },
-  { id: "sub3", studentId: "s3", assignmentId: "a1", submittedOn: daysAgo(4), marks: 17, late: false },
-  { id: "sub4", studentId: "s5", assignmentId: "a1", submittedOn: daysAgo(3), marks: 19, late: false },
-  { id: "sub5", studentId: "s1", assignmentId: "a2", submittedOn: daysAgo(1), marks: 13, late: false },
-  { id: "sub6", studentId: "s3", assignmentId: "a2", submittedOn: daysAgo(0), marks: 12, late: true  },
-  { id: "sub7", studentId: "s6", assignmentId: "a2", submittedOn: daysAgo(1), marks: 15, late: false },
-];
 
 // Icons
 const Icon = ({ name, size = 18, color = "currentColor" }) => {
@@ -407,7 +374,16 @@ function StudentManagement({ students, setStudents }) {
                 <td className={`px-5 py-3 ${t.textPrimary} font-medium`}>{s.name}</td>
                 <td className="px-5 py-3 font-mono text-teal-500 text-xs">{s.roll}</td>
                 <td className={`px-5 py-3 ${t.textSecondary} text-xs`}>{s.email}</td>
-                <td className="px-5 py-3"><Badge text={`Div ${s.div}`} color={s.div === "A" ? "teal" : "blue"} /></td>
+               <td className="px-5 py-3">
+  <Badge 
+    text={`Div ${s.div}`} 
+    color={
+      s.div === "I1" ? "teal" : 
+      s.div === "I2" ? "blue" : 
+      s.div === "I3" ? "amber" : "gray"
+    } 
+  />
+</td>
                 <td className="px-5 py-3">
                   <button onClick={() => setStudents(p => p.filter(x => x.id !== s.id))} className={`${t.textMuted} hover:text-red-500 transition-colors`}>
                     <Icon name="trash" size={15} />
@@ -539,11 +515,36 @@ function SubmissionEntry({ students, assignments, submissions, setSubmissions })
   const submittedIds = new Set(submissions.filter(s => s.assignmentId === selAssign).map(s => s.studentId));
   const isLate       = assignment ? isPastDeadline(assignment.deadline) : false;
 
-  const markSubmitted = () => {
-    if (!modal) return;
-    setSubmissions(prev => [...prev, { id: uid(), studentId: modal.id, assignmentId: selAssign, submittedOn: fmt(new Date()), marks: Number(marks) || 0, late: isLate }]);
-    setMarks(""); setModal(null);
-  };
+  const fmt = (d) => new Date(d).toISOString().split("T")[0];
+
+  const markSubmitted = async () => {
+  if (!modal) return;
+  
+  // Find the submission document for this student+assignment
+  const sub = submissions.find(
+    x => x.studentId === modal.id && x.assignmentId === selAssign
+  );
+  
+  if (sub) {
+    // Update via API
+    try {
+      await updateSubmissionStatus(sub.id, isLate ? 'late' : 'submitted');
+    } catch (err) {
+      console.error('Failed to update submission:', err);
+    }
+  }
+
+  // Update local state
+  setSubmissions(prev => [...prev, { 
+    id: uid(), 
+    studentId: modal.id, 
+    assignmentId: selAssign, 
+    submittedOn: fmt(new Date()), 
+    marks: Number(marks) || 0, 
+    late: isLate 
+  }]);
+  setMarks(""); setModal(null);
+};
 
   return (
     <div>
@@ -920,9 +921,9 @@ const PAGES = [
 export default function App() {
   const [user,        setUser]        = useState(null);
   const [page,        setPage]        = useState("dashboard");
-  const [students,    setStudents]    = useState(SEED_STUDENTS);
-  const [assignments, setAssignments] = useState(SEED_ASSIGNMENTS);
-  const [submissions, setSubmissions] = useState(SEED_SUBMISSIONS);
+  const [students,    setStudents]    = useState([]);
+  const [assignments, setAssignments] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
   const [alerts,      setAlerts]      = useState([]);
 
   // Theme

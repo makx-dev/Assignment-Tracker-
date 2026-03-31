@@ -1,8 +1,15 @@
-require('dotenv').config();
-console.log('MONGODB_URI'),
-process.env.MONGO_URI;
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
 const mongoose = require('mongoose');
-const Student = require('./students.js');
+const Student = require('./student.js');
+
+console.log('MONGODB_URI loaded:', process.env.MONGODB_URI ? '✅ YES' : '❌ NO');
+
+if (!process.env.MONGODB_URI) {
+  console.error('❌ ERROR: MONGODB_URI is missing in .env file');
+  process.exit(1);
+}
 
 
 const students = [
@@ -71,28 +78,22 @@ const students = [
 ];
 
 const seed = async () => {
-    try {
-        // Connect to MongoDB
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log('Connected to MongoDB');
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to MongoDB');
 
-        // Clear existing data
-        await Student.deleteMany({});
-        console.log('Existing students cleared');
+    await Student.deleteMany({});
+    console.log('Existing students cleared');
 
-        // Insert new students
-        const result = await Student.insertMany(students);
-        console.log(`${result.length} students inserted successfully`);
-    } 
-    catch (error) {
-        console.error('Error during seeding:', error.message);
-    } 
-    finally {
-        // Close connection whether success or failure
-        await mongoose.connection.close();
-        console.log('MongoDB connection closed');
-    }
+    const result = await Student.insertMany(students);
+    console.log(`${result.length} students seeded successfully with I1, I2, I3 divisions`);
+
+  } catch (error) {
+    console.error('Seeding Error:', error.message);
+  } finally {
+    await mongoose.connection.close();
+    console.log('MongoDB connection closed');
+  }
 };
 
-// Run the seeder
 seed();
