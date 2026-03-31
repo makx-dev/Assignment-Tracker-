@@ -1,4 +1,4 @@
-const BASE_URL = 'https://assignment-tracker-kwfv.onrender.com/';
+const BASE_URL = 'https://assignment-tracker-kwfv.onrender.com/api';
 
 // Students
 export const getAllStudents = async () => {
