@@ -330,22 +330,24 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
 // Module 2 Student Management
 function StudentManagement({ students, setStudents }) {
   const t = useTheme();
-  const [modal,  setModal]  = useState(false);
-  const [form,   setForm]   = useState({ name: "", roll: "", email: "", div: "I1" });
+  const [modal, setModal] = useState(false);
+  const [form, setForm] = useState({ name: "", roll: "", email: "", div: "I1" });
   const [search, setSearch] = useState("");
 
   const filtered = students.filter(s => {
     const query = search.toLowerCase();
-    const name  = String(s.name || "").toLowerCase();
-    const roll  = String(s.roll || s.rollNo || "").toLowerCase();
-    const div   = String(s.div || s.division || "").toLowerCase();
-    return name.includes(query) || roll.includes(query) || div.includes(query);
+    return (
+      (s.name || "").toLowerCase().includes(query) ||
+      (s.roll || s.rollNo || "").toLowerCase().includes(query) ||
+      (s.div || s.division || "").toLowerCase().includes(query)
+    );
   });
 
   const add = () => {
     if (!form.name || !form.roll || !form.email) return;
     setStudents(prev => [...prev, { id: uid(), ...form }]);
-    setForm({ name: "", roll: "", email: "", div: "I1" }); setModal(false);
+    setForm({ name: "", roll: "", email: "", div: "I1" });
+    setModal(false);
   };
 
   return (
@@ -357,15 +359,21 @@ function StudentManagement({ students, setStudents }) {
         </div>
         <Btn onClick={() => setModal(true)}><Icon name="plus" size={16} />Add Student</Btn>
       </div>
+
       <div className="mb-4">
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by name, roll, or division…"
-          className={`w-full max-w-sm ${t.input} border rounded-lg px-3 py-2.5 text-sm focus:outline-none ${t.inputFocus} transition-colors`} />
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search by name, roll, or division…"
+          className={`w-full max-w-sm ${t.input} border rounded-lg px-3 py-2.5 text-sm focus:outline-none ${t.inputFocus} transition-colors`}
+        />
       </div>
+
       <div className={`border ${t.card} rounded-xl overflow-hidden`}>
         <table className="w-full text-sm">
           <thead>
             <tr className={`border-b ${t.tableBorder} ${t.tableHead} text-xs uppercase tracking-wider`}>
-              {["#","Name","Roll No","Email","Div","Actions"].map(h => <th key={h} className="text-left px-5 py-3">{h}</th>)}
+              {["#","Name","Roll No","Email","Division","Actions"].map(h => <th key={h} className="text-left px-5 py-3">{h}</th>)}
             </tr>
           </thead>
           <tbody>
@@ -375,84 +383,104 @@ function StudentManagement({ students, setStudents }) {
                 <td className={`px-5 py-3 ${t.textPrimary} font-medium`}>{s.name}</td>
                 <td className="px-5 py-3 font-mono text-teal-500 text-xs">{s.roll}</td>
                 <td className={`px-5 py-3 ${t.textSecondary} text-xs`}>{s.email}</td>
-               <td className="px-5 py-3">
-  <Badge 
-    text={`Div ${s.div}`} 
-    color={
-      s.div === "I1" ? "teal" : 
-      s.div === "I2" ? "blue" : 
-      s.div === "I3" ? "amber" : "gray"
-    } 
-  />
-</td>
                 <td className="px-5 py-3">
-                  <button onClick={() => setStudents(p => p.filter(x => x.id !== s.id))} className={`${t.textMuted} hover:text-red-500 transition-colors`}>
+                  <Badge text={s.div} color="teal" />
+                </td>
+                <td className="px-5 py-3">
+                  <button 
+                    onClick={() => setStudents(p => p.filter(x => x.id !== s.id))} 
+                    className={`${t.textMuted} hover:text-red-500 transition-colors`}
+                  >
                     <Icon name="trash" size={15} />
                   </button>
                 </td>
               </tr>
             ))}
-            {filtered.length === 0 && <tr><td colSpan={6} className={`px-5 py-10 text-center ${t.textMuted}`}>No students found</td></tr>}
+            {filtered.length === 0 && (
+              <tr><td colSpan={6} className={`px-5 py-10 text-center ${t.textMuted}`}>No students found</td></tr>
+            )}
           </tbody>
         </table>
       </div>
+
       {modal && (
         <Modal title="Add New Student" onClose={() => setModal(false)}>
-          <Input label="Full Name"  value={form.name}  onChange={e => setForm(f => ({ ...f, name:  e.target.value }))} placeholder="e.g. Ravi Kumar" />
-          <Input label="Roll Number" value={form.roll} onChange={e => setForm(f => ({ ...f, roll:  e.target.value }))} placeholder="e.g. IT2409" />
+          <Input label="Full Name" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Ravi Kumar" />
+          <Input label="Roll Number" value={form.roll} onChange={e => setForm(f => ({ ...f, roll: e.target.value }))} placeholder="e.g. I26" />
           <Input label="Email" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="student@ghriet.ac.in" />
-          <SelectField label="Division" value={form.div} onChange={e => setForm(f => ({ ...f, div: e.target.value }))}
+          <SelectField
+            label="Division"
+            value={form.div}
+            onChange={e => setForm(f => ({ ...f, div: e.target.value }))}
             options={[
               { value: "I1", label: "Division I1" },
               { value: "I2", label: "Division I2" },
               { value: "I3", label: "Division I3" }
-            ]} />
-          <div className="flex gap-3 mt-2"><Btn onClick={add}>Add Student</Btn><Btn variant="ghost" onClick={() => setModal(false)}>Cancel</Btn></div>
+            ]}
+          />
+          <div className="flex gap-3 mt-2">
+            <Btn onClick={add}>Add Student</Btn>
+            <Btn variant="ghost" onClick={() => setModal(false)}>Cancel</Btn>
+          </div>
         </Modal>
       )}
     </div>
   );
 }
 
-//Module 3 Assignment Management
+// Module 3 Assignment Management
 function AssignmentManagement({ assignments, setAssignments }) {
   const t = useTheme();
   const [modal, setModal] = useState(false);
-  const [form,  setForm]  = useState({ title: "", subject: "", deadline: "", maxMarks: "20", desc: "" });
-  const sorted = useMemo(() => [...assignments].sort((a, b) => new Date(a.deadline) - new Date(b.deadline)), [assignments]);
+  const [form, setForm] = useState({ title: "", subject: "", deadline: "", maxMarks: "20", desc: "" });
+
+  const sorted = useMemo(() => [...assignments].sort((a, b) => 
+    new Date(a.deadline || a.dueDate) - new Date(b.deadline || b.dueDate)
+  ), [assignments]);
 
   const add = async () => {
-    if (!form.title || !form.subject || !form.deadline) return;
+    if (!form.title || !form.subject || !form.deadline) {
+      alert("Please fill Title, Subject and Deadline");
+      return;
+    }
+
     try {
-      const result = await createAssignment(form);
-      const payload = result.assignment || result;
-      const assignmentId = payload._id || payload.id;
-      if (!payload || !assignmentId) {
-        throw new Error("Invalid assignment response from server");
-      }
-      const newAssignment = {
-        id: assignmentId,
-        title: payload.title,
-        subject: payload.subject,
-        deadline: payload.dueDate || payload.deadline || form.deadline,
-        maxMarks: Number(form.maxMarks) || 20,
-        desc: payload.desc || form.desc || ""
-      };
-      setAssignments(prev => [newAssignment, ...prev]);
+      const result = await createAssignment({
+        title: form.title,
+        subject: form.subject,
+        dueDate: form.deadline,
+        maxMarks: Number(form.maxMarks),
+        desc: form.desc
+      });
+
+      const newAssign = result.assignment || result;
+
+      setAssignments(prev => [{
+        id: newAssign._id || newAssign.id || uid(),
+        title: newAssign.title,
+        subject: newAssign.subject,
+        deadline: newAssign.dueDate || newAssign.deadline,
+        maxMarks: newAssign.maxMarks || Number(form.maxMarks),
+        desc: newAssign.desc || form.desc
+      }, ...prev]);
+
       setForm({ title: "", subject: "", deadline: "", maxMarks: "20", desc: "" });
       setModal(false);
     } catch (err) {
       console.error("Failed to create assignment:", err);
+      alert("Failed to add assignment.\nMake sure backend is running on http://localhost:5000");
     }
   };
 
   const handleDelete = async (id) => {
+    if (!confirm("Delete this assignment?")) return;
     try {
       await deleteAssignment(id);
+      setAssignments(prev => prev.filter(a => (a._id || a.id) !== id));
     } catch (err) {
-      console.error("Failed to delete assignment:", err);
+      console.error("Failed to delete:", err);
+      alert("Failed to delete assignment.");
     }
-    setAssignments(prev => prev.filter(x => x.id !== id));
   };
 
   return (
@@ -464,11 +492,12 @@ function AssignmentManagement({ assignments, setAssignments }) {
         </div>
         <Btn onClick={() => setModal(true)}><Icon name="plus" size={16} />New Assignment</Btn>
       </div>
+
       <div className="grid gap-3">
         {sorted.map(a => {
-          const past = isPastDeadline(a.deadline);
+          const past = isPastDeadline(a.deadline || a.dueDate);
           return (
-            <div key={a.id} className={`border ${t.card} ${t.cardHover} rounded-xl p-5 transition-colors`}>
+            <div key={a._id || a.id} className={`border ${t.card} ${t.cardHover} rounded-xl p-5 transition-colors`}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1 flex-wrap">
@@ -478,27 +507,38 @@ function AssignmentManagement({ assignments, setAssignments }) {
                   </div>
                   {a.desc && <p className={`${t.textSecondary} text-xs mb-2`}>{a.desc}</p>}
                   <div className={`flex items-center gap-4 text-xs ${t.textSecondary}`}>
-                    <span>Deadline: <span className={past ? "text-red-500" : t.textPrimary}>{formatDate(a.deadline)}</span></span>
+                    <span>Deadline: <span className={past ? "text-red-500" : t.textPrimary}>{formatDate(a.deadline || a.dueDate)}</span></span>
                     <span>Max Marks: <span className={t.textPrimary}>{a.maxMarks}</span></span>
                   </div>
                 </div>
-                <button onClick={() => handleDelete(a.id)} className={`${t.textMuted} hover:text-red-500 transition-colors ml-4`}>
+                <button 
+                  onClick={() => handleDelete(a._id || a.id)} 
+                  className={`${t.textMuted} hover:text-red-500 transition-colors ml-4`}
+                >
                   <Icon name="trash" size={15} />
                 </button>
               </div>
             </div>
           );
         })}
-        {assignments.length === 0 && <div className={`${t.textMuted} text-center py-16 border ${t.card} rounded-xl`}>No assignments yet.</div>}
+        {assignments.length === 0 && (
+          <div className={`${t.textMuted} text-center py-16 border ${t.card} rounded-xl`}>
+            No assignments yet.
+          </div>
+        )}
       </div>
+
       {modal && (
         <Modal title="New Assignment" onClose={() => setModal(false)}>
-          <Input    label="Title"       value={form.title}    onChange={e => setForm(f => ({ ...f, title:    e.target.value }))} placeholder="e.g. Lab Report 3" />
-          <Input    label="Subject"     value={form.subject}  onChange={e => setForm(f => ({ ...f, subject:  e.target.value }))} placeholder="e.g. DSA" />
-          <Input    label="Deadline" type="date" value={form.deadline}  onChange={e => setForm(f => ({ ...f, deadline: e.target.value }))} />
-          <Input    label="Max Marks" type="number" value={form.maxMarks} onChange={e => setForm(f => ({ ...f, maxMarks: e.target.value }))} />
-          <Textarea label="Description" value={form.desc}     onChange={e => setForm(f => ({ ...f, desc:     e.target.value }))} placeholder="Assignment details…" />
-          <div className="flex gap-3 mt-2"><Btn onClick={add}>Add Assignment</Btn><Btn variant="ghost" onClick={() => setModal(false)}>Cancel</Btn></div>
+          <Input label="Title" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Lab Report 3" />
+          <Input label="Subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} placeholder="e.g. DSA" />
+          <Input label="Deadline" type="date" value={form.deadline} onChange={e => setForm(f => ({ ...f, deadline: e.target.value }))} />
+          <Input label="Max Marks" type="number" value={form.maxMarks} onChange={e => setForm(f => ({ ...f, maxMarks: e.target.value }))} />
+          <Textarea label="Description" value={form.desc} onChange={e => setForm(f => ({ ...f, desc: e.target.value }))} placeholder="Assignment details…" />
+          <div className="flex gap-3 mt-2">
+            <Btn onClick={add}>Add Assignment</Btn>
+            <Btn variant="ghost" onClick={() => setModal(false)}>Cancel</Btn>
+          </div>
         </Modal>
       )}
     </div>
