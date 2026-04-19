@@ -1,5 +1,5 @@
 ﻿
-const BASE_URL = 'http://localhost:5000/api';  
+const BASE_URL = 'https://assignment-tracker-kwfv.onrender.com/api';
 
 // Students
 export const getAllStudents = async () => {
