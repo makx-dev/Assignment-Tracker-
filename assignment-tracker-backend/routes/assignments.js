@@ -50,4 +50,21 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// DELETE - Remove assignment and its related submissions
+router.delete('/:id', async (req, res) => {
+  try {
+    const assignment = await Assignment.findByIdAndDelete(req.params.id);
+    if (!assignment) {
+      return res.status(404).json({ error: 'Assignment not found' });
+    }
+
+    await Submission.deleteMany({ assignment: assignment._id });
+    res.json({ message: 'Assignment deleted successfully' });
+  } catch (err) {
+    console.error('DELETE Assignment Error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

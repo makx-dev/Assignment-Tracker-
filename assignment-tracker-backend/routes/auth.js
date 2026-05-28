@@ -4,8 +4,8 @@ const Teacher = require('../models/Teacher');
 const generateToken = require('../utils/generateToken');
 
 const router = express.Router();
-
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '22189835412-8kh0edb17ebkgaksibipn4iadbug276q.apps.googleusercontent.com';
+const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 router.post('/google', async (req, res) => {
   try {
@@ -15,13 +15,13 @@ router.post('/google', async (req, res) => {
       return res.status(400).json({ error: 'Google ID token is required' });
     }
 
-    if (!process.env.GOOGLE_CLIENT_ID) {
+    if (!GOOGLE_CLIENT_ID) {
       return res.status(500).json({ error: 'GOOGLE_CLIENT_ID is not configured' });
     }
 
     const ticket = await googleClient.verifyIdToken({
       idToken,
-      audience: process.env.GOOGLE_CLIENT_ID
+      audience: GOOGLE_CLIENT_ID
     });
     const payload = ticket.getPayload();
 

@@ -251,7 +251,8 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
   const [err,     setErr]     = useState("");
   const [loading, setLoading] = useState(false);
   const isDark = theme === "dark";
-  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const DEFAULT_GOOGLE_CLIENT_ID = '22189835412-8kh0edb17ebkgaksibipn4iadbug276q.apps.googleusercontent.com';
+  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
 
   const USERS = {
     "admin":   { pass: "admin123", role: "admin",   name: "Dr. Admin" },
