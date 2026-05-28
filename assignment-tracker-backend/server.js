@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/api/assignments', require('./routes/assignments'));
 app.use('/api/students',    require('./routes/students'));
 app.use('/api/submissions', require('./routes/submission'));
+app.use('/api/auth', require('./routes/auth'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

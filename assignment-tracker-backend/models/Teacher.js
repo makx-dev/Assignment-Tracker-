@@ -3,14 +3,16 @@ const bcrypt = require('bcryptjs');
 
 const teacherSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  username: { type: String, unique: true, sparse: true },
+  password: { type: String },
+  email: { type: String, unique: true, sparse: true },
+  googleId: { type: String, unique: true, sparse: true },
   role: { type: String, default: 'teacher' }
 });
 
 // Hash password before save
 teacherSchema.pre('save', function(next) {
-  if (!this.isModified('password')) {
+  if (!this.password || !this.isModified('password')) {
     return next();
   }
   bcrypt.hash(this.password, 10, (err, hash) => {
@@ -21,6 +23,9 @@ teacherSchema.pre('save', function(next) {
 
 // Method to check password
 teacherSchema.methods.matchPassword = async function(enteredPassword) {
+  if (!this.password) {
+    return false;
+  }
   return await bcrypt.compare(enteredPassword, this.password);
 };
 

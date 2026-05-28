@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useContext, createContext } from "react";
-import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus } from "../api";
+import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus, googleLogin } from "../api";
 // Redeploy trigger - '31 March 2026'
 // Fresh build - 31 March 2026
 
@@ -251,6 +251,7 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
   const [err,     setErr]     = useState("");
   const [loading, setLoading] = useState(false);
   const isDark = theme === "dark";
+  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const USERS = {
     "admin":   { pass: "admin123", role: "admin",   name: "Dr. Admin" },
@@ -265,6 +266,37 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
       else { setErr("Invalid credentials. Try teacher/teach123 or admin/admin123"); setLoading(false); }
     }, 600);
   };
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID || !window.google?.accounts?.id) {
+      return;
+    }
+
+    window.google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: async (response) => {
+        try {
+          setErr("");
+          setLoading(true);
+          const data = await googleLogin(response.credential);
+          const teacher = data.teacher;
+          onLogin({
+            username: teacher.email || teacher.name,
+            role: teacher.role || "teacher",
+            name: teacher.name || "Teacher"
+          });
+        } catch (error) {
+          setErr(error.message || "Google sign in failed");
+          setLoading(false);
+        }
+      }
+    });
+
+    window.google.accounts.id.renderButton(
+      document.getElementById("googleSignInBtn"),
+      { theme: isDark ? "filled_black" : "outline", size: "large", shape: "pill", width: 320 }
+    );
+  }, [GOOGLE_CLIENT_ID, isDark, onLogin]);
 
   const bg    = isDark ? "bg-gray-950" : "bg-slate-100";
   const card  = isDark ? "bg-gray-900/90 border-gray-800" : "bg-white border-slate-200";
@@ -318,6 +350,13 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
             style={{ background: loading ? "#0097A7" : "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
             {loading ? "Authenticating..." : "Sign In →"}
           </button>
+          <div className="mt-3 flex flex-col items-center gap-2">
+            {GOOGLE_CLIENT_ID ? (
+              <div id="googleSignInBtn" />
+            ) : (
+              <p className={`text-xs ${footT}`}>Google Sign-In hidden: set `VITE_GOOGLE_CLIENT_ID` in frontend `.env`.</p>
+            )}
+          </div>
           <div className={`mt-4 pt-4 border-t ${foot} text-center text-xs`}>
             Demo: <span className={footT}>teacher / teach123</span> &nbsp;|&nbsp; <span className={footT}>admin / admin123</span>
           </div>
