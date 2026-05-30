@@ -64,17 +64,31 @@ router.post('/', async (req, res) => {
 // DELETE - Remove assignment and its related submissions
 router.delete('/:id', async (req, res) => {
   try {
-    const assignment = await Assignment.findByIdAndDelete(req.params.id);
+    const assignmentId = req.params.id;
+
+    // 1. Delete the assignment
+    const assignment = await Assignment.findByIdAndDelete(assignmentId);
     
     if (!assignment) {
       return res.status(404).json({ error: 'Assignment not found' });
     }
 
-    await Submission.deleteMany({ assignment: assignment._id });
-    return res.json({ message: 'Assignment deleted successfully' });
+    // 2. Delete all related submissions
+    // NOTE: If your Submission schema uses 'assignmentId' instead of 'assignment', 
+    // change the key in the object below to match your schema.
+    await Submission.deleteMany({ assignment: assignmentId });
+    
+    return res.json({ message: 'Assignment and related submissions deleted successfully' });
+    
   } catch (err) {
     console.error('DELETE Assignment Error:', err);
-    return res.status(500).json({ error: err.message });
+    
+    // Handle invalid Object IDs gracefully instead of a raw 500 error
+    if (err.name === 'CastError') {
+       return res.status(400).json({ error: 'Invalid Assignment ID format' });
+    }
+    
+    return res.status(500).json({ error: 'Failed to delete assignment' });
   }
 });
 
