@@ -2,6 +2,7 @@ const express = require('express');
 const { OAuth2Client } = require('google-auth-library');
 const Teacher = require('../models/Teacher');
 const generateToken = require('../utils/generateToken');
+const Alert = require('../models/Alert');
 
 const router = express.Router();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '22189835412-8kh0edb17ebkgaksibipn4iadbug276q.apps.googleusercontent.com';
@@ -75,7 +76,13 @@ router.post('/google', async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(401).json({ error: 'Google authentication failed', details: error.message });
+   
+    console.error("GOOGLE LOGIN CRASH:", error); 
+    
+    return res.status(401).json({ 
+      error: 'Google authentication failed', 
+      details: error.message 
+    });
   }
 });
 

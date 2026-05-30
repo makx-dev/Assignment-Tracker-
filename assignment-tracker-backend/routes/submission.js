@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Submission = require('../models/submission');
+const Alert = require('../models/Alert');
 
 // GET all submissions for one assignment (teacher view)
 router.get('/assignment/:assignmentId', async (req, res) => {

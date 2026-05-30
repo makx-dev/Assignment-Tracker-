@@ -246,6 +246,8 @@ const ThemeToggle = ({ theme, onToggle }) => {
 };
 
 // Module 1 Login
+// Module 1 Login
+// Module 1 Login
 function LoginPage({ onLogin, theme, onToggleTheme }) {
   const [form,    setForm]    = useState({ user: "", pass: "" });
   const [err,     setErr]     = useState("");
@@ -299,67 +301,67 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
     );
   }, [GOOGLE_CLIENT_ID, isDark, onLogin]);
 
-  const bg    = isDark ? "bg-gray-950" : "bg-slate-100";
-  const card  = isDark ? "bg-gray-900/90 border-gray-800" : "bg-white border-slate-200";
-  const text  = isDark ? "text-white"   : "text-slate-900";
-  const sub   = isDark ? "text-gray-500": "text-slate-400";
-  const inp   = isDark ? "bg-gray-800 border-gray-700 text-white placeholder-gray-600" : "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400";
-  const lbl   = isDark ? "text-gray-400": "text-slate-600";
-  const foot  = isDark ? "border-gray-800 text-gray-600": "border-slate-100 text-slate-400";
-  const footT = isDark ? "text-gray-500": "text-slate-500";
+  // Dynamic Theme Variables for 3-Color Constraint (Black/White/Blue)
+  const bgApp    = isDark ? "bg-black" : "bg-white";
+  const bgCard   = isDark ? "bg-black border-white" : "bg-white border-black";
+  const textBase = isDark ? "text-white" : "text-black";
+  const btnTheme = isDark ? "bg-black border-white text-white" : "bg-white border-black text-black";
+  const inpClass = isDark ? "bg-black border-white text-white placeholder-white/50" : "bg-white border-black text-black placeholder-black/50";
+  const errClass = isDark ? "bg-blue-900 border-blue-500 text-white" : "bg-blue-100 border-blue-500 text-black";
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${bg} relative overflow-hidden transition-colors duration-300`}>
-      <div style={{ position:"absolute",inset:0,opacity:isDark?0.04:0.06,backgroundImage:"linear-gradient(#00BCD4 1px,transparent 1px),linear-gradient(90deg,#00BCD4 1px,transparent 1px)",backgroundSize:"48px 48px" }} />
-      <div style={{ position:"absolute",top:"20%",left:"50%",transform:"translateX(-50%)",width:600,height:600,borderRadius:"50%",background:"radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%)" }} />
-
+    <div className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300 ${bgApp}`}>
+      
       {/* Theme toggle top-right */}
       <button onClick={onToggleTheme}
-        className={`absolute top-5 right-5 z-10 flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium border transition-all
-          ${isDark ? "bg-gray-900 border-gray-700 text-gray-400 hover:text-yellow-400" : "bg-white border-slate-200 text-slate-500 hover:text-indigo-600"}`}>
+        className={`absolute top-5 right-5 z-10 flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium border transition-all hover:text-blue-500 hover:border-blue-500 ${btnTheme}`}>
         <Icon name={isDark ? "sun" : "moon"} size={14} />
         {isDark ? "Light" : "Dark"}
       </button>
 
       <div className="relative z-10 w-full max-w-md px-4">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
-            style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 bg-blue-600">
             <Icon name="assignment" size={28} color="white" />
           </div>
-          <h1 className={`text-3xl font-bold ${text} tracking-tight`} style={{ fontFamily: "'Georgia', serif" }}>
-            Assignment<span style={{ color: "#00BCD4" }}>Track</span>
+          <h1 className={`text-3xl font-bold tracking-tight ${textBase}`} style={{ fontFamily: "'Georgia', serif" }}>
+            Assignment<span className="text-blue-500">Track</span>
           </h1>
-          <p className={`${sub} text-sm mt-1`}>GHRIET Nagpur · IT Department</p>
+          <p className={`text-sm mt-1 ${textBase}`}>GHRIET Nagpur · IT Department</p>
         </div>
 
-        <div className={`${card} border rounded-2xl p-8 shadow-2xl backdrop-blur transition-colors duration-300`}>
-          <h2 className={`${text} font-semibold text-lg mb-6`}>Sign In to Continue</h2>
+        <div className={`border rounded-2xl p-8 shadow-2xl transition-colors duration-300 ${bgCard}`}>
+          <h2 className={`font-semibold text-lg mb-6 ${textBase}`}>Sign In to Continue</h2>
+          
           <div className="mb-4">
-            <label className={`block text-sm ${lbl} mb-1.5 font-medium`}>Username</label>
+            <label className={`block text-sm mb-1.5 font-medium ${textBase}`}>Username</label>
             <input value={form.user} onChange={e => setForm(f => ({ ...f, user: e.target.value }))} placeholder="e.g. teacher"
-              className={`w-full ${inp} border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-teal-500 transition-colors`} />
+              className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors ${inpClass}`} />
           </div>
+          
           <div className="mb-4">
-            <label className={`block text-sm ${lbl} mb-1.5 font-medium`}>Password</label>
+            <label className={`block text-sm mb-1.5 font-medium ${textBase}`}>Password</label>
             <input type="password" value={form.pass} onChange={e => setForm(f => ({ ...f, pass: e.target.value }))}
               placeholder="••••••••" onKeyDown={e => e.key === "Enter" && handle()}
-              className={`w-full ${inp} border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-teal-500 transition-colors`} />
+              className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors ${inpClass}`} />
           </div>
-          {err && <div className="text-red-400 text-xs mb-4 bg-red-900/20 border border-red-800/40 rounded-lg px-3 py-2">{err}</div>}
-          <button onClick={handle} disabled={loading} className="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all"
-            style={{ background: loading ? "#0097A7" : "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+          
+          {err && <div className={`text-xs mb-4 border rounded-lg px-3 py-2 ${errClass}`}>{err}</div>}
+          
+          <button onClick={handle} disabled={loading} className="w-full py-2.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 font-semibold text-sm transition-all border border-blue-600">
             {loading ? "Authenticating..." : "Sign In →"}
           </button>
+          
           <div className="mt-3 flex flex-col items-center gap-2">
             {GOOGLE_CLIENT_ID ? (
               <div id="googleSignInBtn" />
             ) : (
-              <p className={`text-xs ${footT}`}>Google Sign-In hidden: set `VITE_GOOGLE_CLIENT_ID` in frontend `.env`.</p>
+              <p className={`text-xs ${textBase}`}>Google Sign-In hidden: set `VITE_GOOGLE_CLIENT_ID` in frontend `.env`.</p>
             )}
           </div>
-          <div className={`mt-4 pt-4 border-t ${foot} text-center text-xs`}>
-            Demo: <span className={footT}>teacher / teach123</span> &nbsp;|&nbsp; <span className={footT}>admin / admin123</span>
+          
+          <div className={`mt-4 pt-4 border-t text-center text-xs transition-colors duration-300 ${isDark ? "border-white text-white" : "border-black text-black"}`}>
+            Demo: <span className="text-blue-500">teacher / teach123</span> &nbsp;|&nbsp; <span className="text-blue-500">admin / admin123</span>
           </div>
         </div>
       </div>
