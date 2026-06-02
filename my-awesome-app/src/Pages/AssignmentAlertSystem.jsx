@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useContext, createContext } from "react";
-import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus, googleLogin } from "../api";
+import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus } from "../api";
 // Redeploy trigger - '31 March 2026'
 // Fresh build - 31 March 2026
 
@@ -253,8 +253,6 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
   const [err,     setErr]     = useState("");
   const [loading, setLoading] = useState(false);
   const isDark = theme === "dark";
-  const DEFAULT_GOOGLE_CLIENT_ID = '22189835412-8kh0edb17ebkgaksibipn4iadbug276q.apps.googleusercontent.com';
-  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || DEFAULT_GOOGLE_CLIENT_ID;
 
   const USERS = {
     "admin":   { pass: "admin123", role: "admin",   name: "Dr. Admin" },
@@ -270,36 +268,6 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
     }, 600);
   };
 
-  useEffect(() => {
-    if (!GOOGLE_CLIENT_ID || !window.google?.accounts?.id) {
-      return;
-    }
-
-    window.google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: async (response) => {
-        try {
-          setErr("");
-          setLoading(true);
-          const data = await googleLogin(response.credential);
-          const teacher = data.teacher;
-          onLogin({
-            username: teacher.email || teacher.name,
-            role: teacher.role || "teacher",
-            name: teacher.name || "Teacher"
-          });
-        } catch (error) {
-          setErr(error.message || "Google sign in failed");
-          setLoading(false);
-        }
-      }
-    });
-
-    window.google.accounts.id.renderButton(
-      document.getElementById("googleSignInBtn"),
-      { theme: isDark ? "filled_black" : "outline", size: "large", shape: "pill", width: 320 }
-    );
-  }, [GOOGLE_CLIENT_ID, isDark, onLogin]);
 
   // Dynamic Theme Variables for 3-Color Constraint (Black/White/Blue)
   const bgApp    = isDark ? "bg-black" : "bg-white";
@@ -352,13 +320,6 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
             {loading ? "Authenticating..." : "Sign In →"}
           </button>
           
-          <div className="mt-3 flex flex-col items-center gap-2">
-            {GOOGLE_CLIENT_ID ? (
-              <div id="googleSignInBtn" />
-            ) : (
-              <p className={`text-xs ${textBase}`}>Google Sign-In hidden: set `VITE_GOOGLE_CLIENT_ID` in frontend `.env`.</p>
-            )}
-          </div>
           
           <div className={`mt-4 pt-4 border-t text-center text-xs transition-colors duration-300 ${isDark ? "border-white text-white" : "border-black text-black"}`}>
             Demo: <span className="text-blue-500">teacher / teach123</span> &nbsp;|&nbsp; <span className="text-blue-500">admin / admin123</span>

@@ -6,7 +6,6 @@ const teacherSchema = new mongoose.Schema({
   username: { type: String, unique: true, sparse: true },
   password: { type: String },
   email: { type: String, unique: true, sparse: true },
-  googleId: { type: String, unique: true, sparse: true },
   role: { type: String, default: 'teacher' }
 });
 

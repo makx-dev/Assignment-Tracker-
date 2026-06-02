@@ -50,15 +50,3 @@ export const updateSubmissionStatus = async (submissionId, status) => {
   return res.json();
 };
 
-export const googleLogin = async (idToken) => {
-  const res = await fetch(`${BASE_URL}/auth/google`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ idToken })
-  });
-  if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({}));
-    throw new Error(errorBody.error || `Google login failed: ${res.status}`);
-  }
-  return res.json();
-};
