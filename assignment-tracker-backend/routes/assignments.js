@@ -6,6 +6,7 @@ const Alert = require('../models/Alert');
 const Assignment = require('../models/assignment');
 const Student    = require('../models/student');
 const Submission = require('../models/submission');
+const { requireTeacher } = require('../middleware/auth');
 
 // GET all assignments (newest first)
 router.get('/', async (req, res) => {
@@ -18,8 +19,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-// POST - Create new assignment + auto-create pending submissions
-router.post('/', async (req, res) => {
+// POST - Create new assignment + auto-create pending submissions (teacher only)
+router.post('/', ...requireTeacher, async (req, res) => {
   try {
     const { title, subject, maxMarks, description, desc, dueDate, deadline } = req.body;
     
@@ -61,8 +62,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// DELETE - Remove assignment and its related submissions
-router.delete('/:id', async (req, res) => {
+// DELETE - Remove assignment and its related submissions (teacher only)
+router.delete('/:id', ...requireTeacher, async (req, res) => {
   try {
     const assignmentId = req.params.id;
 

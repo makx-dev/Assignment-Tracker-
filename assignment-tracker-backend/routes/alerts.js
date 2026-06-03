@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Alert = require('../models/Alert');
 const Notification = require('../models/Notification');
-const { protect } = require('../middleware/auth');
+const { requireTeacher, requireStudent } = require('../middleware/auth');
 
 // POST /api/alerts - Create a new alert and generate notifications for students
 router.post('/', async (req, res) => {
@@ -59,8 +59,8 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/alerts/teacher - Get all alerts created by the logged-in teacher
-// Protected route: requires a valid token; middleware attaches `req.user`
-router.get('/teacher', protect, async (req, res) => {
+// Protected route: requires teacher role; middleware attaches `req.user`
+router.get('/teacher', ...requireTeacher, async (req, res) => {
   try {
     // If middleware attached a teacher document, use its _id, otherwise fallback to req.user._id
     const teacherId = req.user && req.user._id ? req.user._id : (req.user && req.user.id) ? req.user.id : null;
@@ -84,8 +84,8 @@ router.get('/teacher', protect, async (req, res) => {
 });
 
 // GET /api/alerts/student - Get all notifications for the logged-in student
-// Protected route: requires a valid token; middleware attaches `req.user`
-router.get('/student', protect, async (req, res) => {
+// Protected route: requires student role; middleware attaches `req.user`
+router.get('/student', ...requireStudent, async (req, res) => {
   try {
     const studentId = req.user && req.user._id ? req.user._id : (req.user && req.user.id) ? req.user.id : null;
     if (!studentId) return res.status(401).json({ error: 'Not authorized' });
@@ -109,7 +109,7 @@ router.get('/student', protect, async (req, res) => {
 });
 
 // PATCH /api/alerts/:alertId/seen - Mark an alert notification as seen by a student
-router.patch('/:alertId/seen', protect, async (req, res) => {
+router.patch('/:alertId/seen', ...requireStudent, async (req, res) => {
   try {
     const alertId = req.params.alertId;
     const studentId = req.user._id; 
@@ -169,7 +169,7 @@ router.patch('/:alertId/seen', protect, async (req, res) => {
 });
 
 // PATCH /api/alerts/:alertId/submit - Mark an alert as submitted by a student
-router.patch('/:alertId/submit', protect, async (req, res) => {
+router.patch('/:alertId/submit', ...requireStudent, async (req, res) => {
   try {
     const alertId = req.params.alertId;
     const studentId = req.user._id; // Assuming auth middleware populates req.user

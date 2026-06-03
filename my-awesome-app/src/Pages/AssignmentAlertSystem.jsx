@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useContext, createContext } from "react";
-import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus } from "../api";
+import { getAllStudents, getAllAssignments, createAssignment, deleteAssignment, updateSubmissionStatus, login } from "../api";
 // Redeploy trigger - '31 March 2026'
 // Fresh build - 31 March 2026
 
@@ -249,25 +249,46 @@ const ThemeToggle = ({ theme, onToggle }) => {
 // Module 1 Login
 // Module 1 Login
 function LoginPage({ onLogin, theme, onToggleTheme }) {
-  const [form,    setForm]    = useState({ user: "", pass: "" });
+  const [form,    setForm]    = useState({ email: "", password: "" });
   const [err,     setErr]     = useState("");
   const [loading, setLoading] = useState(false);
   const isDark = theme === "dark";
 
-  const USERS = {
-    "admin":   { pass: "admin123", role: "admin",   name: "Dr. Admin" },
-    "teacher": { pass: "teach123", role: "teacher",  name: "Prof. Sharma" },
+  const handle = async () => {
+    setErr("");
+    setLoading(true);
+
+    try {
+      const data = await login(form.email, form.password);
+      const user = {
+        username: data.teacher.email || data.teacher.name,
+        role: data.teacher.role,
+        name: data.teacher.name
+      };
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(user));
+      onLogin(user);
+    } catch (error) {
+      setErr(error.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handle = () => {
-    setErr(""); setLoading(true);
-    setTimeout(() => {
-      const u = USERS[form.user];
-      if (u && u.pass === form.pass) onLogin({ username: form.user, role: u.role, name: u.name });
-      else { setErr("Invalid credentials. Try teacher/teach123 or admin/admin123"); setLoading(false); }
-    }, 600);
+  const demoLogin = (ev) => {
+    ev && ev.preventDefault();
+    localStorage.setItem('demo', '1');
+    const demoTeacher = { email: 'demo@local', name: 'Demo Teacher', role: 'teacher' };
+    localStorage.setItem('user', JSON.stringify(demoTeacher));
+    if (!localStorage.getItem('demo_assignments')) {
+      const seed = [
+        { id: 'demo-1', title: 'Demo Assignment 1', subject: 'Math', dueDate: null, maxMarks: 20, desc: 'First demo' },
+        { id: 'demo-2', title: 'Demo Assignment 2', subject: 'Science', dueDate: null, maxMarks: 20, desc: 'Second demo' }
+      ];
+      localStorage.setItem('demo_assignments', JSON.stringify(seed));
+    }
+    onLogin({ username: demoTeacher.email, role: demoTeacher.role, name: demoTeacher.name });
   };
-
 
   // Dynamic Theme Variables for 3-Color Constraint (Black/White/Blue)
   const bgApp    = isDark ? "bg-black" : "bg-white";
@@ -302,15 +323,15 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
           <h2 className={`font-semibold text-lg mb-6 ${textBase}`}>Sign In to Continue</h2>
           
           <div className="mb-4">
-            <label className={`block text-sm mb-1.5 font-medium ${textBase}`}>Username</label>
-            <input value={form.user} onChange={e => setForm(f => ({ ...f, user: e.target.value }))} placeholder="e.g. teacher"
+            <label className={`block text-sm mb-1.5 font-medium ${textBase}`}>Email</label>
+            <input value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@ghrcemn.raisoni.net"
               className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors ${inpClass}`} />
           </div>
           
           <div className="mb-4">
             <label className={`block text-sm mb-1.5 font-medium ${textBase}`}>Password</label>
-            <input type="password" value={form.pass} onChange={e => setForm(f => ({ ...f, pass: e.target.value }))}
-              placeholder="••••••••" onKeyDown={e => e.key === "Enter" && handle()}
+            <input type="password" value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
+              placeholder="qwer6732" onKeyDown={e => e.key === "Enter" && handle()}
               className={`w-full border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition-colors ${inpClass}`} />
           </div>
           
@@ -319,10 +340,14 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
           <button onClick={handle} disabled={loading} className="w-full py-2.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 font-semibold text-sm transition-all border border-blue-600">
             {loading ? "Authenticating..." : "Sign In →"}
           </button>
+
+          <div className="mt-3">
+            <button onClick={demoLogin} className="w-full py-2 rounded-lg bg-gray-600 text-white hover:bg-gray-700 font-semibold text-sm transition-all">Demo Sign In</button>
+          </div>
           
           
           <div className={`mt-4 pt-4 border-t text-center text-xs transition-colors duration-300 ${isDark ? "border-white text-white" : "border-black text-black"}`}>
-            Demo: <span className="text-blue-500">teacher / teach123</span> &nbsp;|&nbsp; <span className="text-blue-500">admin / admin123</span>
+            Use your `@ghrcemn.raisoni.net` email and password <span className="text-blue-500">qwer6732</span>.
           </div>
         </div>
       </div>
@@ -963,7 +988,10 @@ const PAGES = [
 ];
 
 export default function App() {
-  const [user,        setUser]        = useState(null);
+  const [user,        setUser]        = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [page,        setPage]        = useState("dashboard");
   const [students,    setStudents]    = useState([]);
   const [assignments, setAssignments] = useState([]);
@@ -1102,7 +1130,13 @@ export default function App() {
             </div>
             {/* Theme toggle with pill switch */}
             <ThemeToggle theme={theme} onToggle={toggleTheme} />
-            <button onClick={() => setUser(null)} className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs ${t.logoutBtn} transition-all mt-1`}>
+            <button onClick={() => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('user');
+              localStorage.removeItem('demo');
+              localStorage.removeItem('demo_assignments');
+              setUser(null);
+            }} className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs ${t.logoutBtn} transition-all mt-1`}>
               <Icon name="logout" size={13} />Logout
             </button>
           </div>

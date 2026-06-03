@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const Teacher = require('../models/Teacher');
 
-const protect = async (req, res, next) => {
+// Core verification middleware
+const verifyToken = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -30,4 +31,22 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+// Role-based middleware arrays
+const requireTeacher = [verifyToken, (req, res, next) => {
+  if (req.user && req.user.role === 'teacher') {
+    return next();
+  }
+  return res.status(403).json({ error: 'Teacher role required' });
+}];
+
+const requireStudent = [verifyToken, (req, res, next) => {
+  if (req.user && req.user.role === 'student') {
+    return next();
+  }
+  return res.status(403).json({ error: 'Student role required' });
+}];
+
+// Legacy middleware for backward compatibility
+const protect = verifyToken;
+
+module.exports = { protect, verifyToken, requireTeacher, requireStudent };
