@@ -973,7 +973,7 @@ export default function App() {
       .catch(err => console.error("Failed to fetch assignments:", err));
   }, []);
 
-  const navigate = (pageId) => { setPage(pageId); if (!isDesktop) setSidebarOpen(false); };
+  const navigate = (pageId) => { setPage(pageId); setSidebarOpen(false); };
   const unreadAlerts = alerts.filter(a => !a.read).length;
 
   if (!user) return (
@@ -1000,14 +1000,14 @@ export default function App() {
       <div className={`flex min-h-screen ${t.appBg} ${t.textPrimary} transition-colors duration-300`}
         style={{ fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
 
-        {/* Mobile overlay */}
-        {!isDesktop && sidebarOpen && (
+        {/* Sidebar overlay */}
+        {sidebarOpen && (
           <div className="fixed inset-0 z-20 bg-black/50" style={{ backdropFilter: "blur(2px)" }}
             onClick={() => setSidebarOpen(false)} />
         )}
 
         {/* Sidebar */}
-        <aside style={{ position: isDesktop ? "relative" : "fixed", top: 0, bottom: 0, left: 0, zIndex: 30, transform: isDesktop ? "translateX(0)" : sidebarOpen ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.3s ease-in-out", width: "240px", flexShrink: 0 }}
+        <aside style={{ position: "fixed", top: 0, bottom: 0, left: 0, zIndex: 30, transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)", transition: "transform 0.3s ease-in-out", width: "280px", maxWidth: "80vw", flexShrink: 0 }}
           className={`${t.sidebarBg} border-r ${t.sidebarBorder} flex flex-col transition-colors duration-300`}>
 
           {/* Logo */}
@@ -1064,14 +1064,13 @@ export default function App() {
         </aside>
 
         {/*Main */}
-        <main className="flex-1 overflow-y-auto min-w-0">
-          {/* Mobile topbar */}
-          {!isDesktop && (
-            <div className={`sticky top-0 z-10 ${t.topbar} border-b px-4 py-3 flex items-center gap-3 transition-colors duration-300`}
-              style={{ backdropFilter: "blur(8px)" }}>
-              <button onClick={() => setSidebarOpen(true)} className={`${t.textSecondary} p-1.5 rounded-lg transition-colors`}>
-                <Icon name="menu" size={20} />
-              </button>
+        <main className="flex-1 overflow-y-auto min-w-0 flex flex-col">
+          {/* Topbar with menu button */}
+          <div className={`sticky top-0 z-10 ${t.topbar} border-b px-4 py-3 flex items-center gap-3 transition-colors duration-300`}
+            style={{ backdropFilter: "blur(8px)" }}>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className={`${t.textSecondary} p-1.5 rounded-lg transition-colors hover:${t.textPrimary}`}>
+              <Icon name={sidebarOpen ? "menu" : "menu"} size={20} />
+            </button>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>
                   <Icon name="assignment" size={12} color="white" />
@@ -1086,10 +1085,11 @@ export default function App() {
                 <span className="bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{unreadAlerts}</span>
               )}
             </div>
-          )}
 
-          <div className="max-w-6xl mx-auto p-4 md:p-8">
-            {renderPage()}
+          <div className="flex-1 overflow-y-auto">
+            <div className="max-w-7xl mx-auto p-3 sm:p-4 md:p-6 lg:p-8">
+              {renderPage()}
+            </div>
           </div>
         </main>
       </div>
