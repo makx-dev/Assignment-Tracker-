@@ -9,83 +9,83 @@ const useTheme = () => useContext(ThemeContext);
 
 const THEMES = {
   dark: {
-    appBg:         "bg-gray-950",
-    sidebarBg:     "bg-gray-900",
-    sidebarBorder: "border-gray-800",
+    appBg:         "bg-black",
+    sidebarBg:     "bg-black",
+    sidebarBorder: "border-white/10",
     textPrimary:   "text-white",
-    textSecondary: "text-gray-400",
-    textMuted:     "text-gray-600",
-    textLabel:     "text-gray-400",
-    card:          "bg-gray-900/60 border-gray-800",
-    cardHover:     "hover:border-gray-700",
-    statCard:      "bg-gray-900/80",
-    statBorder:    "border-gray-800",
-    navItem:       "text-gray-500 hover:text-gray-200 hover:bg-gray-800/60",
-    navActive:     "bg-teal-900/40 text-teal-300",
-    navActiveDot:  "bg-teal-400",
-    input:         "bg-gray-800 border-gray-700 text-white placeholder-gray-600",
-    inputFocus:    "focus:border-teal-500",
-    select:        "bg-gray-800 border-gray-700 text-white",
-    btnGhost:      "bg-gray-800 hover:bg-gray-700 text-gray-300",
-    tableHead:     "text-gray-500",
-    tableRow:      "border-gray-800/50 hover:bg-gray-800/30",
-    tableBorder:   "border-gray-800",
-    modalBg:       "bg-gray-900",
-    modalBorder:   "border-gray-700",
-    modalHeader:   "border-gray-800",
-    topbar:        "bg-gray-900/95 border-gray-800",
-    divider:       "border-gray-800",
-    userFooter:    "border-gray-800",
-    userRole:      "text-gray-600",
-    logoutBtn:     "text-gray-600 hover:text-red-400 hover:bg-red-900/20",
-    themeBtn:      "text-gray-500 hover:text-yellow-400 hover:bg-yellow-900/20",
-    activityHover: "hover:bg-gray-800/20",
-    activityBorder:"border-gray-800/40",
-    sectionHeader: "text-gray-400",
-    alertUnread:   "bg-amber-950/20 border-amber-900/50",
-    alertRead:     "bg-gray-900/30 border-gray-800",
-    alertMsg:      "bg-gray-950/80 border-gray-800 text-gray-400",
-    progressTrack: "bg-gray-800",
-    defaulterCard: "bg-gray-900/60 border-red-900/40 hover:border-red-800/60",
+    textSecondary: "text-blue-300",
+    textMuted:     "text-blue-200",
+    textLabel:     "text-blue-200",
+    card:          "bg-black/60 border-white/10",
+    cardHover:     "hover:border-white/20",
+    statCard:      "bg-black/80",
+    statBorder:    "border-white/10",
+    navItem:       "text-blue-200 hover:text-white hover:bg-blue-900/30",
+    navActive:     "bg-blue-900/40 text-blue-300",
+    navActiveDot:  "bg-blue-400",
+    input:         "bg-black border-white/10 text-white placeholder-white/50",
+    inputFocus:    "focus:border-blue-500",
+    select:        "bg-black border-white/10 text-white",
+    btnGhost:      "bg-black hover:bg-white/5 text-blue-200",
+    tableHead:     "text-blue-200",
+    tableRow:      "border-white/10 hover:bg-white/5",
+    tableBorder:   "border-white/10",
+    modalBg:       "bg-black",
+    modalBorder:   "border-white/10",
+    modalHeader:   "border-white/10",
+    topbar:        "bg-black/95 border-white/10",
+    divider:       "border-white/10",
+    userFooter:    "border-white/10",
+    userRole:      "text-blue-200",
+    logoutBtn:     "text-blue-200 hover:text-red-400 hover:bg-red-900/20",
+    themeBtn:      "text-blue-200 hover:text-blue-400 hover:bg-blue-900/20",
+    activityHover: "hover:bg-white/5",
+    activityBorder:"border-white/10",
+    sectionHeader: "text-blue-200",
+    alertUnread:   "bg-blue-900/20 border-blue-800/50",
+    alertRead:     "bg-black/30 border-white/10",
+    alertMsg:      "bg-black/80 border-white/10 text-blue-200",
+    progressTrack: "bg-white/10",
+    defaulterCard: "bg-black/60 border-red-900/40 hover:border-red-800/60",
   },
   light: {
-    appBg:         "bg-slate-100",
+    appBg:         "bg-white",
     sidebarBg:     "bg-white",
-    sidebarBorder: "border-slate-200",
-    textPrimary:   "text-slate-900",
-    textSecondary: "text-slate-500",
-    textMuted:     "text-slate-400",
-    textLabel:     "text-slate-600",
-    card:          "bg-white border-slate-200",
-    cardHover:     "hover:border-slate-300",
+    sidebarBorder: "border-black",
+    textPrimary:   "text-black",
+    textSecondary: "text-blue-600",
+    textMuted:     "text-blue-400",
+    textLabel:     "text-blue-600",
+    card:          "bg-white border-black",
+    cardHover:     "hover:border-blue-200",
     statCard:      "bg-white",
-    statBorder:    "border-slate-200",
-    navItem:       "text-slate-500 hover:text-slate-900 hover:bg-slate-100",
-    navActive:     "bg-teal-50 text-teal-700",
-    navActiveDot:  "bg-teal-500",
-    input:         "bg-slate-50 border-slate-300 text-slate-900 placeholder-slate-400",
-    inputFocus:    "focus:border-teal-500",
-    select:        "bg-slate-50 border-slate-300 text-slate-900",
-    btnGhost:      "bg-slate-100 hover:bg-slate-200 text-slate-700",
-    tableHead:     "text-slate-500",
-    tableRow:      "border-slate-100 hover:bg-slate-50",
-    tableBorder:   "border-slate-200",
+    statBorder:    "border-black",
+    navItem:       "text-blue-600 hover:text-white hover:bg-blue-600/10",
+    navActive:     "bg-blue-50 text-blue-700",
+    navActiveDot:  "bg-blue-500",
+    input:         "bg-white border-black text-black placeholder-black/50",
+    inputFocus:    "focus:border-blue-500",
+    select:        "bg-white border-black text-black",
+    btnGhost:      "bg-white hover:bg-blue-50 text-blue-600",
+    tableHead:     "text-blue-600",
+    tableRow:      "border-black/10 hover:bg-blue-50",
+    tableBorder:   "border-black",
     modalBg:       "bg-white",
-    modalBorder:   "border-slate-200",
-    modalHeader:   "border-slate-100",
-    topbar:        "bg-white/95 border-slate-200",
-    divider:       "border-slate-200",
-    userFooter:    "border-slate-200",
-    userRole:      "text-slate-400",
-    logoutBtn:     "text-slate-400 hover:text-red-500 hover:bg-red-50",
-    themeBtn:      "text-slate-400 hover:text-indigo-600 hover:bg-indigo-50",
-    activityHover: "hover:bg-slate-50",
-    activityBorder:"border-slate-100",
-    sectionHeader: "text-slate-600",
-    alertUnread:   "bg-amber-50 border-amber-200",
-    alertRead:     "bg-slate-50 border-slate-200",
-    alertMsg:      "bg-slate-100 border-slate-200 text-slate-600",
-    progressTrack: "bg-slate-200",
+    modalBorder:   "border-black",
+    modalHeader:   "border-black",
+    topbar:        "bg-white/95 border-black",
+    divider:       "border-black",
+    userFooter:    "border-black",
+    userRole:      "text-blue-400",
+    logoutBtn:     "text-blue-400 hover:text-red-500 hover:bg-red-50",
+    themeBtn:      "text-blue-400 hover:text-blue-600 hover:bg-blue-50",
+    activityHover: "hover:bg-blue-50",
+    activityBorder:"border-black/10",
+    sectionHeader: "text-blue-600",
+    alertUnread:   "bg-blue-50 border-blue-200",
+    alertRead:     "bg-white border-black",
+    alertMsg:      "bg-white border-black text-blue-600",
+    progressTrack: "bg-blue-200",
     defaulterCard: "bg-white border-red-200 hover:border-red-300",
   },
 };
@@ -148,7 +148,7 @@ const Badge = ({ text, color }) => {
   return <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${colors[color] || colors.gray}`}>{text}</span>;
 };
 
-const StatCard = ({ icon, label, value, sub, accent = "#00BCD4" }) => {
+const StatCard = ({ icon, label, value, sub, accent = "#2563eb" }) => {
   const t = useTheme();
   return (
     <div style={{ borderTop: `3px solid ${accent}` }}
@@ -314,7 +314,7 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
             <Icon name="assignment" size={28} color="white" />
           </div>
           <h1 className={`text-3xl font-bold tracking-tight ${textBase}`} style={{ fontFamily: "'Georgia', serif" }}>
-            Assignment<span className="text-blue-500">Track</span>
+            Acadence
           </h1>
           <p className={`text-sm mt-1 ${textBase}`}>GHRIET Nagpur · IT Department</p>
         </div>
@@ -799,7 +799,7 @@ function AlertModule({ students, assignments, submissions, alerts, setAlerts }) 
                 <div className="flex items-start justify-between flex-wrap gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1 flex-wrap">
-                      <Icon name="alert" size={16} color={al.read ? "#9ca3af" : "#f59e0b"} />
+                      <Icon name="alert" size={16} color={al.read ? "#9ca3af" : "#2563eb"} />
                       <span className={`${t.textPrimary} font-semibold`}>{al.studentName}</span>
                       <span className="font-mono text-teal-500 text-xs">{al.studentRoll}</span>
                       {!al.read && <Badge text="New" color="amber" />}
@@ -861,7 +861,7 @@ function ReportModule({ students, assignments, submissions }) {
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-2">
                     <div className={`w-16 h-1.5 ${t.progressTrack} rounded-full overflow-hidden`}>
-                      <div style={{ width: `${a.rate}%`, background: a.rate > 70 ? "#10b981" : a.rate > 40 ? "#f59e0b" : "#ef4444" }} className="h-full rounded-full" />
+                      <div style={{ width: `${a.rate}%`, background: a.rate > 70 ? "#1e90ff" : a.rate > 40 ? "#60a5fa" : "#93c5fd" }} className="h-full rounded-full" />
                     </div>
                     <span className={`text-xs font-mono ${t.textSecondary}`}>{a.rate}%</span>
                   </div>
@@ -923,10 +923,10 @@ function Dashboard({ students, assignments, submissions, alerts }) {
         <p className={`${t.textSecondary} text-sm mt-1`}>Overview of assignment tracking system</p>
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard icon="students"   label="Total Students"  value={students.length}    sub="Enrolled"                        accent="#00BCD4" />
-        <StatCard icon="assignment" label="Assignments"     value={assignments.length} sub={`${activeAssigns.length} active`} accent="#7C3AED" />
-        <StatCard icon="defaulter"  label="Defaulters"      value={defaulters}         sub="Past deadline"                   accent="#EF4444" />
-        <StatCard icon="bell"       label="Unread Alerts"   value={unreadAlerts}       sub="Pending review"                  accent="#F59E0B" />
+        <StatCard icon="students"   label="Total Students"  value={students.length}    sub="Enrolled"                        accent="#2563eb" />
+        <StatCard icon="assignment" label="Assignments"     value={assignments.length} sub={`${activeAssigns.length} active`} accent="#2563eb" />
+        <StatCard icon="defaulter"  label="Defaulters"      value={defaulters}         sub="Past deadline"                   accent="#1e40af" />
+        <StatCard icon="bell"       label="Unread Alerts"   value={unreadAlerts}       sub="Pending review"                  accent="#2563eb" />
       </div>
       <div className={`border ${t.card} rounded-xl p-5 mb-4`}>
         <h3 className={`${t.sectionHeader} font-semibold text-sm mb-4`}>Submission Progress</h3>
@@ -945,7 +945,7 @@ function Dashboard({ students, assignments, submissions, alerts }) {
                   </div>
                 </div>
                 <div className={`w-full h-2 ${t.progressTrack} rounded-full overflow-hidden`}>
-                  <div style={{ width: `${pct}%`, background: pct === 100 ? "#10b981" : past ? "#ef4444" : "#00BCD4" }} className="h-full rounded-full transition-all" />
+                  <div style={{ width: `${pct}%`, background: pct === 100 ? "#1e40af" : past ? "#ef4444" : "#2563eb" }} className="h-full rounded-full transition-all" />
                 </div>
               </div>
             );
@@ -959,7 +959,7 @@ function Dashboard({ students, assignments, submissions, alerts }) {
           : recentActivity.map(s => (
               <div key={s.id} className={`flex items-center gap-4 px-5 py-3 border-b ${t.activityBorder} ${t.activityHover} transition-colors`}>
                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                  style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>{s.studentName?.[0]}</div>
+                  style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>{s.studentName?.[0]}</div>
                 <div className="flex-1 min-w-0">
                   <span className={`${t.textPrimary} text-sm font-medium`}>{s.studentName}</span>
                   <span className={`${t.textSecondary} text-xs ml-2`}>submitted <span className={t.textPrimary}>{s.assignTitle}</span></span>
@@ -1087,11 +1087,11 @@ export default function App() {
           <div className={`px-5 py-5 border-b ${t.divider} flex items-center justify-between`}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+                style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>
                 <Icon name="assignment" size={16} color="white" />
               </div>
               <div>
-                <div className={`${t.textPrimary} font-bold text-sm leading-tight`}>AssignmentTrack</div>
+                <div className={`${t.textPrimary} font-bold text-sm leading-tight`}>Acadence</div>
                 <div className={`${t.textMuted} text-xs`}>GHRIET · IT Dept</div>
               </div>
             </div>
@@ -1122,7 +1122,7 @@ export default function App() {
           <div className={`px-4 py-4 border-t ${t.userFooter}`}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>{user.name[0]}</div>
+                style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>{user.name[0]}</div>
               <div className="min-w-0">
                 <div className={`${t.textPrimary} text-xs font-medium truncate`}>{user.name}</div>
                 <div className={`${t.userRole} text-xs capitalize`}>{user.role}</div>
@@ -1152,10 +1152,10 @@ export default function App() {
                 <Icon name="menu" size={20} />
               </button>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+                <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>
                   <Icon name="assignment" size={12} color="white" />
                 </div>
-                <span className={`${t.textPrimary} font-semibold text-sm`}>AssignmentTrack</span>
+                <span className={`${t.textPrimary} font-semibold text-sm`}>Acadence</span>
               </div>
               {/* Theme icon on mobile topbar */}
               <button onClick={toggleTheme} className={`ml-auto p-1.5 rounded-lg ${t.themeBtn} transition-colors`}>

@@ -179,7 +179,7 @@ const Badge = ({ text, color }) => {
   return <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${colors[color] || colors.gray}`}>{text}</span>;
 };
 
-const StatCard = ({ icon, label, value, sub, accent = "#00BCD4" }) => {
+const StatCard = ({ icon, label, value, sub, accent = "#2563eb" }) => {
   const t = useTheme();
   return (
     <div style={{ borderTop: `3px solid ${accent}` }}
@@ -308,8 +308,8 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
 
   return (
     <div className={`min-h-screen flex items-center justify-center ${bg} relative overflow-hidden transition-colors duration-300`}>
-      <div style={{ position:"absolute",inset:0,opacity:isDark?0.04:0.06,backgroundImage:"linear-gradient(#00BCD4 1px,transparent 1px),linear-gradient(90deg,#00BCD4 1px,transparent 1px)",backgroundSize:"48px 48px" }} />
-      <div style={{ position:"absolute",top:"20%",left:"50%",transform:"translateX(-50%)",width:600,height:600,borderRadius:"50%",background:"radial-gradient(circle, rgba(0,188,212,0.08) 0%, transparent 70%)" }} />
+      <div style={{ position:"absolute",inset:0,opacity:isDark?0.04:0.06,backgroundImage:"linear-gradient(#2563eb 1px,transparent 1px),linear-gradient(90deg,#2563eb 1px,transparent 1px)",backgroundSize:"48px 48px" }} />
+      <div style={{ position:"absolute",top:"20%",left:"50%",transform:"translateX(-50%)",width:600,height:600,borderRadius:"50%",background:"radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)" }} />
 
       {/* Theme toggle top-right */}
       <button onClick={onToggleTheme}
@@ -322,11 +322,11 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
       <div className="relative z-10 w-full max-w-md px-4">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
-            style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+            style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>
             <Icon name="assignment" size={28} color="white" />
           </div>
           <h1 className={`text-3xl font-bold ${text} tracking-tight`} style={{ fontFamily: "'Georgia', serif" }}>
-            Assignment<span style={{ color: "#00BCD4" }}>Track</span>
+            Acadence
           </h1>
           <p className={`${sub} text-sm mt-1`}>GHRIET Nagpur ┬╖ IT Department</p>
         </div>
@@ -346,7 +346,7 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
           </div>
           {err && <div className="text-red-400 text-xs mb-4 bg-red-900/20 border border-red-800/40 rounded-lg px-3 py-2">{err}</div>}
           <button onClick={handle} disabled={loading} className="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all"
-            style={{ background: loading ? "#0097A7" : "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+            style={{ background: loading ? "#1e40af" : "linear-gradient(135deg, #2563eb, #1e40af)" }}>
             {loading ? "Authenticating..." : "Sign In ΓåÆ"}
           </button>
           <div className={`mt-4 pt-4 border-t ${foot} text-center text-xs`}>
@@ -694,7 +694,7 @@ function AlertModule({ students, assignments, submissions, alerts, setAlerts }) 
                 <div className="flex items-start justify-between flex-wrap gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1 flex-wrap">
-                      <Icon name="alert" size={16} color={al.read ? "#9ca3af" : "#f59e0b"} />
+                      <Icon name="alert" size={16} color={al.read ? "#9ca3af" : "#2563eb"} />
                       <span className={`${t.textPrimary} font-semibold`}>{al.studentName}</span>
                       <span className="font-mono text-teal-500 text-xs">{al.studentRoll}</span>
                       {!al.read && <Badge text="New" color="amber" />}
@@ -756,7 +756,7 @@ function ReportModule({ students, assignments, submissions }) {
                 <td className="px-5 py-3">
                   <div className="flex items-center gap-2">
                     <div className={`w-16 h-1.5 ${t.progressTrack} rounded-full overflow-hidden`}>
-                      <div style={{ width: `${a.rate}%`, background: a.rate > 70 ? "#10b981" : a.rate > 40 ? "#f59e0b" : "#ef4444" }} className="h-full rounded-full" />
+                      <div style={{ width: `${a.rate}%`, background: a.rate > 70 ? "#1e40af" : a.rate > 40 ? "#2563eb" : "#93c5fd" }} className="h-full rounded-full" />
                     </div>
                     <span className={`text-xs font-mono ${t.textSecondary}`}>{a.rate}%</span>
                   </div>
@@ -818,10 +818,10 @@ function Dashboard({ students, assignments, submissions, alerts }) {
         <p className={`${t.textSecondary} text-sm mt-1`}>Overview of assignment tracking system</p>
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <StatCard icon="students"   label="Total Students"  value={students.length}    sub="Enrolled"                        accent="#00BCD4" />
-        <StatCard icon="assignment" label="Assignments"     value={assignments.length} sub={`${activeAssigns.length} active`} accent="#7C3AED" />
-        <StatCard icon="defaulter"  label="Defaulters"      value={defaulters}         sub="Past deadline"                   accent="#EF4444" />
-        <StatCard icon="bell"       label="Unread Alerts"   value={unreadAlerts}       sub="Pending review"                  accent="#F59E0B" />
+        <StatCard icon="students"   label="Total Students"  value={students.length}    sub="Enrolled"                        accent="#2563eb" />
+        <StatCard icon="assignment" label="Assignments"     value={assignments.length} sub={`${activeAssigns.length} active`} accent="#2563eb" />
+        <StatCard icon="defaulter"  label="Defaulters"      value={defaulters}         sub="Past deadline"                   accent="#1e40af" />
+        <StatCard icon="bell"       label="Unread Alerts"   value={unreadAlerts}       sub="Pending review"                  accent="#2563eb" />
       </div>
       <div className={`border ${t.card} rounded-xl p-5 mb-4`}>
         <h3 className={`${t.sectionHeader} font-semibold text-sm mb-4`}>Submission Progress</h3>
@@ -840,7 +840,7 @@ function Dashboard({ students, assignments, submissions, alerts }) {
                   </div>
                 </div>
                 <div className={`w-full h-2 ${t.progressTrack} rounded-full overflow-hidden`}>
-                  <div style={{ width: `${pct}%`, background: pct === 100 ? "#10b981" : past ? "#ef4444" : "#00BCD4" }} className="h-full rounded-full transition-all" />
+                  <div style={{ width: `${pct}%`, background: pct === 100 ? "#1e40af" : past ? "#ef4444" : "#2563eb" }} className="h-full rounded-full transition-all" />
                 </div>
               </div>
             );
@@ -948,11 +948,11 @@ export default function App() {
           <div className={`px-5 py-5 border-b ${t.divider} flex items-center justify-between`}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+                style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>
                 <Icon name="assignment" size={16} color="white" />
               </div>
               <div>
-                <div className={`${t.textPrimary} font-bold text-sm leading-tight`}>AssignmentTrack</div>
+                <div className={`${t.textPrimary} font-bold text-sm leading-tight`}>Acadence</div>
                 <div className={`${t.textMuted} text-xs`}>GHRIET ┬╖ IT Dept</div>
               </div>
             </div>
@@ -969,7 +969,7 @@ export default function App() {
                 <button key={p.id} onClick={() => navigate(p.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all relative ${active ? t.navActive + " font-medium" : t.navItem}`}>
                   {active && <span className={`absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-r-full ${t.navActiveDot}`} />}
-                  <Icon name={p.icon} size={16} color={active ? "#0d9488" : "currentColor"} />
+                  <Icon name={p.icon} size={16} color={active ? "#2563eb" : "currentColor"} />
                   {p.label}
                   {p.id === "alerts" && unreadAlerts > 0 && (
                     <span className="ml-auto bg-amber-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">{unreadAlerts}</span>
@@ -983,7 +983,7 @@ export default function App() {
           <div className={`px-4 py-4 border-t ${t.userFooter}`}>
             <div className="flex items-center gap-3 mb-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>{user.name[0]}</div>
+                style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>{user.name[0]}</div>
               <div className="min-w-0">
                 <div className={`${t.textPrimary} text-xs font-medium truncate`}>{user.name}</div>
                 <div className={`${t.userRole} text-xs capitalize`}>{user.role}</div>
@@ -1007,10 +1007,10 @@ export default function App() {
                 <Icon name="menu" size={20} />
               </button>
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, #00BCD4, #0097A7)" }}>
+                <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: "linear-gradient(135deg, #2563eb, #1e40af)" }}>
                   <Icon name="assignment" size={12} color="white" />
                 </div>
-                <span className={`${t.textPrimary} font-semibold text-sm`}>AssignmentTrack</span>
+                <span className={`${t.textPrimary} font-semibold text-sm`}>Acadence</span>
               </div>
               {/* Theme icon on mobile topbar */}
               <button onClick={toggleTheme} className={`ml-auto p-1.5 rounded-lg ${t.themeBtn} transition-colors`}>
