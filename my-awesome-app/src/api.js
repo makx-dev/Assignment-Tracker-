@@ -1,8 +1,9 @@
-﻿const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+﻿const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const authHeaders = () => {
   const token = localStorage.getItem('token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  if (!token || token === 'null' || token === 'undefined') return {};
+  return { Authorization: `Bearer ${token}` };
 };
 
 const isDemoMode = () => localStorage.getItem('demo') === '1';
@@ -27,18 +28,28 @@ export const login = async (email, password) => {
     return { token: null, teacher: { email, name: 'Demo Teacher', role: 'teacher' } };
   }
 
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
+  try {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
 
-  if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({}));
-    throw new Error(errorBody.error || `Login failed: ${res.status}`);
+    if (!res.ok) {
+      const errorBody = await res.json().catch(() => ({}));
+      throw new Error(errorBody.error || `Login failed: ${res.status}`);
+    }
+
+    return res.json();
+  } catch (err) {
+    const isNetworkError = err instanceof TypeError || /Failed to fetch|NetworkError|network/i.test(err.message);
+    if (isNetworkError) {
+      localStorage.setItem('demo', '1');
+      localStorage.removeItem('token');
+      return { token: null, teacher: { email, name: 'Demo Teacher', role: 'teacher' } };
+    }
+    throw err;
   }
-
-  return res.json();
 };
 
 export const getAllStudents = async () => {

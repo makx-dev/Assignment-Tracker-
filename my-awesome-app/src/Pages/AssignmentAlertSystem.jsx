@@ -265,7 +265,11 @@ function LoginPage({ onLogin, theme, onToggleTheme }) {
         role: data.teacher.role,
         name: data.teacher.name
       };
-      localStorage.setItem('token', data.token);
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      } else {
+        localStorage.removeItem('token');
+      }
       localStorage.setItem('user', JSON.stringify(user));
       onLogin(user);
     } catch (error) {
